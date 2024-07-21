@@ -69,6 +69,7 @@ function GameServer() {
       <div>
         <div id="viewport-frame"></div>
       </div>
+      <div>test</div>
     </>
   );
 }
