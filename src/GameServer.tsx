@@ -63,8 +63,8 @@ function GameServer() {
       />
       <link rel="manifest" href="/manifest.json" />
       <Helmet>
-        <script type="text/javascript" src="ioquake3.js"></script>
-        <script type="text/javascript" src="webserver.js"></script>
+        <script type="text/javascript" src="/ioquake3.js"></script>
+        <script type="text/javascript" src="/webserver.js"></script>
       </Helmet>
       <div>
         <div id="viewport-frame"></div>
