@@ -30824,6 +30824,25 @@ Module['callMain'] = Module.callMain = function callMain(args) {
 
   args = args || [];
 
+  if (ENVIRONMENT_IS_WEB)
+  {
+    Module.printErr('ENVIRONMENT_IS_WEB');
+  }
+  else
+  {
+    Module.printErr('NOT ENVIRONMENT_IS_WEB');
+  }
+
+  if (preloadStartTime !=null)
+    {
+      Module.printErr('preloadStartTime not null');
+    }
+    else
+    {
+      Module.printErr('preloadStartTime null');
+  
+    }
+
   if (ENVIRONMENT_IS_WEB && preloadStartTime !== null) {
     Module.printErr('preload time: ' + (Date.now() - preloadStartTime) + ' ms');
   }
