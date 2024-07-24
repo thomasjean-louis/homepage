@@ -67,7 +67,7 @@ function getQueryCommands() {
       "fs_cdn",
       "d18ztv6taz5um2.cloudfront.net",
       "+connect",
-      "quakejs-alb-gameserver-1500546407.us-east-1.elb.amazonaws.com",
+      "test.654654632496.realhandsonlabs.net",
     ]; //custom args list targeting a local content server and local game server both at the address 'quakejs'
     args.push.apply(args, getQueryCommands());
     ioq3.callMain(args);
