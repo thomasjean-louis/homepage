@@ -68,7 +68,7 @@ function getQueryCommands() {
       "d18ztv6taz5um2.cloudfront.net",
       "+connect",
       // "test.654654632496.realhandsonlabs.net",
-      "process.env.LOAD_BALANCER_HTTPS_URL",
+      process.env.LOAD_BALANCER_HTTPS_URL,
     ]; //custom args list targeting a local content server and local game server both at the address 'quakejs'
     args.push.apply(args, getQueryCommands());
     ioq3.callMain(args);
