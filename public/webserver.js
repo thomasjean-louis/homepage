@@ -62,12 +62,16 @@ function getQueryCommands() {
 
     window.addEventListener("resize", resizeViewport);
 
+    var scripts = document.getElementsByTagName('script');
+    var lastScript = scripts[scripts.length-1];
+    var scriptName = lastScript;
+
     var args = [
       "+set",
       "fs_cdn",
       "d18ztv6taz5um2.cloudfront.net",
       "+connect",
-      import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL,
+      scriptName.getAttribute('data-url'),
     ]; //custom args list targeting a local content server and local game server both at the address 'quakejs'
     args.push.apply(args, getQueryCommands());
     ioq3.callMain(args);

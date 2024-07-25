@@ -62,8 +62,13 @@ function GameServer() {
         href="/favicon-16x16.png"
       />
       <link rel="manifest" href="/manifest.json" />
+      {}
       <Helmet>
-        <script type="text/javascript" src="/ioquake3.js"></script>
+        <script
+          type="text/javascript"
+          src="/ioquake3.js"
+          data-url={import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
+        ></script>
         <script type="text/javascript" src="/webserver.js"></script>
       </Helmet>
       <div>
