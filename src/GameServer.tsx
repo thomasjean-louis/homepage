@@ -62,7 +62,7 @@ function GameServer() {
         href="/favicon-16x16.png"
       />
       <link rel="manifest" href="/manifest.json" />
-      {}
+      {import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
       <Helmet>
         <script
           type="text/javascript"
