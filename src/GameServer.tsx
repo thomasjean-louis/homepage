@@ -64,12 +64,12 @@ function GameServer() {
       <link rel="manifest" href="/manifest.json" />
       {import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
       <Helmet>
+        <script type="text/javascript" src="/ioquake3.js"></script>
         <script
           type="text/javascript"
-          src="/ioquake3.js"
+          src="/webserver.js"
           data-url={import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
         ></script>
-        <script type="text/javascript" src="/webserver.js"></script>
       </Helmet>
       <div>
         <div id="viewport-frame"></div>
