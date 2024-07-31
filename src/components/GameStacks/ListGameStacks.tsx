@@ -7,7 +7,7 @@ function ListGameStacks() {
 
   async function fechGameStacks() {
     const gameStacksGetEndpoint =
-      import.meta.env.VITE_API_HTTPS_URL + "/gamestacks";
+      "https://" + import.meta.env.VITE_API_HTTPS_URL + "/gamestacks";
 
     try {
       const response = await axios.get(gameStacksGetEndpoint);
