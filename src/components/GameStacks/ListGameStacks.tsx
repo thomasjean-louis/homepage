@@ -5,23 +5,24 @@ import axios from "axios";
 function ListGameStacks() {
   const [gamestacks, setGameStacks] = useState([]);
 
-  async function fechGameStacks() {
+  async function fetchGameStacks() {
+    // const gameStacksGetEndpoint =
+    //   "https://api.339713159350.realhandsonlabs.net/gamestacks";
     const gameStacksGetEndpoint =
       "https://" + import.meta.env.VITE_API_HTTPS_URL + "/gamestacks";
 
     try {
-      const response = await axios.get(gameStacksGetEndpoint);
-      console.log("response :" + response);
-
-      setGameStacks(response.data);
+      axios.get(gameStacksGetEndpoint).then((res) => {
+        console.log(res.data);
+        setGameStacks(res.data);
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    fechGameStacks();
-    console.log("gamestacks :" + gamestacks);
+    fetchGameStacks();
   }, []);
 
   return <div>ListGameStacks</div>;
