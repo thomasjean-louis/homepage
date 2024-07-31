@@ -19,6 +19,7 @@ function ListGameStacks() {
 
   useEffect(() => {
     fechGameStacks();
+    console.log(gamestacks);
   }, []);
 
   return <div>ListGameStacks</div>;
