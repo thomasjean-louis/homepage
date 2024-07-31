@@ -19,7 +19,7 @@ function ListGameStacks() {
 
   useEffect(() => {
     fechGameStacks();
-    console.log(gamestacks);
+    console.log("gamestacks :" + gamestacks);
   }, []);
 
   return <div>ListGameStacks</div>;
