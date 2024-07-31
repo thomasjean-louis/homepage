@@ -11,6 +11,8 @@ function ListGameStacks() {
 
     try {
       const response = await axios.get(gameStacksGetEndpoint);
+      console.log("response :" + response);
+
       setGameStacks(response.data);
     } catch (error) {
       console.error(error);
