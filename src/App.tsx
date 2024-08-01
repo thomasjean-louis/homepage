@@ -16,7 +16,7 @@ const theme = createTheme({
 
 import Home from "./components/Home/Home";
 import ListGameStacks from "./components/GameStacks/ListGameStacks";
-import AddGameStacks from "./components/GameStacks/AddGameStack";
+import AddGameStacks from "./components/GameStacks/CreateGameStack";
 import UpdateGameStacks from "./components/GameStacks/UpdateGameStack";
 
 function App() {
