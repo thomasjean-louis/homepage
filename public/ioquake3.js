@@ -22730,6 +22730,7 @@ function copyTempDouble(ptr) {
         GLEmulation.hasRunInit = true;
   
         GLEmulation.fogColor = new Float32Array(4);
+      
   
         // Add some emulation workarounds
         Module.printErr('WARNING: using emscripten GL emulation. This is a collection of limited workarounds, do not expect it to work.');
@@ -30997,7 +30998,104 @@ run();
 // {{POST_RUN_ADDITIONS}}
 
 
+// add webserver
 
+function getQueryCommands() {
+    var search = /([^&=]+)/g;
+    var query = window.location.search.substring(1);
+
+    var args = [];
+
+    var match;
+    while ((match = search.exec(query))) {
+      var val = decodeURIComponent(match[1]);
+      val = val.split(" ");
+      val[0] = "+" + val[0];
+      args.push.apply(args, val);
+    }
+
+    return args;
+  }
+
+  console.log("webserver.js");
+
+
+  console.log("on load");
+  
+  function resizeViewport() {
+    console.log("resize viewport");
+  
+        if (!ioq3.canvas) {
+          // ignore if the canvas hasn't yet initialized
+          return;
+        }
+        if (
+          document["webkitFullScreenElement"] ||
+          document["webkitFullscreenElement"] ||
+          document["mozFullScreenElement"] ||
+          document["mozFullscreenElement"] ||
+          document["fullScreenElement"] ||
+          document["fullscreenElement"]
+        ) {
+          // ignore resize events due to going fullscreen
+          return;
+        }
+        ioq3.setCanvasSize(
+          ioq3.viewport.offsetWidth,
+          ioq3.viewport.offsetHeight
+        );
+      }
+  
+      ioq3.viewport = document.getElementById("viewport-frame");
+      ioq3.elementPointerLock = true;
+  
+      console.log("error");
+  
+      ioq3.exitHandler = function (err) {
+        if (err) {
+          var form = document.createElement("form");
+          form.setAttribute("method", "POST");
+          form.setAttribute("action", "/");
+  
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", "error");
+          hiddenField.setAttribute("value", err);
+          form.appendChild(hiddenField);
+  
+          document.body.appendChild(form);
+          form.submit();
+          return;
+        }
+  
+        window.location.href = "/";
+      };
+  
+      console.log("next");
+  
+      window.addEventListener("resize", resizeViewport);
+  
+      // var scripts = document.getElementsByTagName('script');
+      // var lastScript = scripts[scripts.length-1];
+      // var scriptName = lastScript;
+  
+      // console.log("args "+scriptName.getAttribute('data-url')+ "**");
+  
+      var args = [
+        "+set",
+        "fs_cdn",
+        "d18ztv6taz5um2.cloudfront.net",
+        "+connect",
+        document.currentScript.getAttribute('data-url'),
+      ]; 
+      args.push.apply(args, getQueryCommands());
+    console.log("callMain");
+  
+      ioq3.callMain(args);
+
+  // window.onload = function () {
+    
+  // };
 
 
 

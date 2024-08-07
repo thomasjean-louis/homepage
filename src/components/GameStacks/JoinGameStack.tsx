@@ -1,7 +1,22 @@
 import { Helmet } from "react-helmet";
+import { useGameStackContext } from "./GameStackContext";
+import { useEffect } from "react";
 
-function GameServer() {
-  // JSX: JavaScript XML
+function JoinGameStacks() {
+  const gameStack = useGameStackContext();
+
+  useEffect(() => {
+    const handler = () => {
+      console.log(1);
+    };
+
+    if (document.readyState === "complete") {
+      handler();
+    } else {
+      window.addEventListener("load", handler);
+      return () => document.removeEventListener("load", handler);
+    }
+  });
 
   return (
     <>
@@ -62,13 +77,12 @@ function GameServer() {
         href="/favicon-16x16.png"
       />
       <link rel="manifest" href="/manifest.json" />
-      {import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
+      {gameStack.game_server_https_url}
       <Helmet>
-        <script type="text/javascript" src="/ioquake3.js"></script>
         <script
           type="text/javascript"
-          src="/webserver.js"
-          data-url={import.meta.env.VITE_LOAD_BALANCER_HTTPS_URL}
+          src="/ioquake3.js"
+          data-url={gameStack.game_server_https_url}
         ></script>
       </Helmet>
       <div>
@@ -79,4 +93,4 @@ function GameServer() {
   );
 }
 
-export default GameServer;
+export default JoinGameStacks;
