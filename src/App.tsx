@@ -6,7 +6,7 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { fetchAuthSession } from "aws-amplify/auth";
 
-let token = (await fetchAuthSession()).tokens?.idToken?.toString();
+// let token = (await fetchAuthSession()).tokens?.idToken?.toString();
 
 import {
   BrowserRouter as Router,
@@ -69,7 +69,7 @@ function App() {
                   <Route path="/gamestack/join" element={<JoinGameStacks />} />
                 </Routes>
               </Router>
-              <p>Your token is: {token}</p>
+              {/* <p>Your token is: {token}</p> */}
               <button onClick={signOut}>Sign out</button>
             </GameStackContext.Provider>
           </ThemeProvider>
