@@ -22,7 +22,7 @@ function ListGameStacks() {
   const [gamestacks, setGameStacks] = useState([]);
 
   const apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
-  // const apiHttpsUrl = "https://" + "api.891377339569.realhandsonlabs.net";
+  // const apiHttpsUrl = "https://" + "api.891377196548.realhandsonlabs.net";
 
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";

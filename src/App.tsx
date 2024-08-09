@@ -48,8 +48,8 @@ function App() {
   return (
     <div className="App">
       <Authenticator
-        // socialProviders={["apple", "facebook", "google"]}
-        hideSignUp
+      // socialProviders={["apple", "facebook", "google"]}
+      // hideSignUp
       >
         {({ signOut, user }) => (
           <ThemeProvider theme={theme}>
