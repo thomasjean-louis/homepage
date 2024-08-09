@@ -39,8 +39,6 @@ export interface GameStack {
 }
 
 function App() {
-  // const [gameStackState, setGameStackState] = useState(undefined);
-
   const [gameStack] = useState<GameStack>({
     id: "defaultId",
     capacity: -1,

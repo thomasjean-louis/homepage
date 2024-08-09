@@ -15,41 +15,11 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
 import { GameStack } from "../../App";
 import { useGameStackContext } from "./GameStackContext";
-// import { GameStackContext } from "./GameStackContext";
-// import { GameStack, GameStackContext } from "./GameStacksContext";
-
-// function TestModif(_id: string, _capacity: number, _serverLink: string) {
-//   // const navigate = useNavigate();
-//   const { gameStack, setGameStack } = useContext(GameStackContext);
-//   // setGameStacks(_gameStack);
-//   // _id: string,
-//   // _capacity: number,
-//   // _serverLink: string
-
-//   useEffect(() => {
-//     setGameStack({
-//       id: "id_temkkp",
-//       capacity: 44,
-//       game_server_https_url: "qsdkkjqj.com",
-//     });
-//   });
-//   return <></>;
-// }
 
 function ListGameStacks() {
   const navigate = useNavigate();
 
-  // const { setGameStack } = useContext(GameStackContext);
-
   const [gamestacks, setGameStacks] = useState([]);
-
-  // const [gameStack] = useState<GameStack>({
-  //   id: "defaultId",
-  //   capacity: -1,
-  //   game_server_https_url: "defaultUrl",
-  // });
-
-  // const { gameStack, setGameStack } = useContext(GameStackContext);
 
   const apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
   // const apiHttpsUrl = "https://" + "api.891377339569.realhandsonlabs.net";
@@ -145,8 +115,6 @@ function ListGameStacks() {
 
   return (
     <div>
-      {/* <GameStackContext.Provider value={gameStack}> */}
-      {/* <TestModif _id: "truc", _capacity: 4, _serverLink: "ee"/> */}
       <Box sx={{ textAlign: "right", padding: "20px" }}>
         <IconButton
           color="secondary"
@@ -160,7 +128,6 @@ function ListGameStacks() {
           variant="contained"
           onClick={() => {
             createGameStack();
-            //  addGameStack();
           }}
         >
           Create
@@ -203,13 +170,6 @@ function ListGameStacks() {
                         Number(gamestack[0]["Capacity"]),
                         gamestack[0]["ServerLink"]
                       );
-
-                      // gameStack.id = "test-new-sdhdhsdb";
-
-                      // updateGameStack("truu", 5, "azeaze.com");
-                      // navigate("/gamestacks/update", {});
-                      // TestModif("test-id", 2, "server-link");
-                      // updateGameStack();
                     }}
                   >
                     {" "}

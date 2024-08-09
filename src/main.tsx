@@ -6,10 +6,10 @@ import { Amplify } from "aws-amplify";
 Amplify.configure({
   Auth: {
     Cognito: {
-      userPoolId: "us-east-1_L0nL5f1Ec",
-      userPoolClientId: "3lphbb3kc3u9e06j5j1pc9m5q3",
-      identityPoolId: "us-east-1:2d320387-30c6-4c7c-a114-af1599be62d0",
-      userPoolEndpoint: "https://auth.654654598396.realhandsonlabs.net",
+      userPoolId: "us-east-1_X9GPdaxDY",
+      userPoolClientId: "2bemimoavopb12npuacjg2fl4",
+      identityPoolId: "us-east-1:80576997-dd36-4acc-a0b4-3750268befb2",
+      userPoolEndpoint: "https://auth.891377196548.realhandsonlabs.net",
       loginWith: {
         username: true,
       },
