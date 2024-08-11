@@ -24,7 +24,7 @@ function ListGameStacks() {
   var apiHttpsUrl = "default";
 
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    apiHttpsUrl = "https://" + "api.891376965167.realhandsonlabs.net";
+    apiHttpsUrl = "https://" + "api.533266981053.realhandsonlabs.net";
   } else {
     apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
   }
@@ -81,16 +81,10 @@ function ListGameStacks() {
 
   function deleteGameStack(_id: string) {
     try {
-      axios
-        .delete(deleteGameStackEndpoint + _id, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setGameStacks(res.data);
-        });
+      axios.delete(deleteGameStackEndpoint + "/" + _id).then((res) => {
+        console.log(res.data);
+        refreshGameStacks();
+      });
     } catch (error) {
       console.error(error);
     }
@@ -106,7 +100,7 @@ function ListGameStacks() {
         })
         .then((res) => {
           console.log(res.data);
-          setGameStacks(res.data);
+          refreshGameStacks();
         });
     } catch (error) {
       console.error(error);
@@ -117,16 +111,6 @@ function ListGameStacks() {
     updateGameStackContext(_id, _capacity, _serverLink);
     navigate("/gamestack/join", {});
   }
-
-  // useEffect(() => {
-  //   fetchGameStacks();
-  // }, []);
-
-  // const [gameStack] = useState<GameStack>({
-  //   id: "eee",
-  //   capacity: 4,
-  //   game_server_https_url: "ezezz",
-  // });
 
   useEffect(() => {
     fetchGameStacks();
