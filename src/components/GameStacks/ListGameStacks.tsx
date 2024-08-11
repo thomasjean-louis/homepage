@@ -21,8 +21,13 @@ function ListGameStacks() {
 
   const [gamestacks, setGameStacks] = useState([]);
 
-  const apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
-  // const apiHttpsUrl = "https://" + "api.891377196548.realhandsonlabs.net";
+  var apiHttpsUrl = "default";
+
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    apiHttpsUrl = "https://" + "api.891376965167.realhandsonlabs.net";
+  } else {
+    apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
+  }
 
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";

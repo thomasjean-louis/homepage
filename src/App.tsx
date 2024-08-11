@@ -47,11 +47,9 @@ function App() {
 
   return (
     <div className="App">
-      <Authenticator
-      // socialProviders={["apple", "facebook", "google"]}
-      // hideSignUp
-      >
-        {({ signOut, user }) => (
+      <div>
+        {location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1" ? (
           <ThemeProvider theme={theme}>
             <GameStackContext.Provider value={gameStack}>
               <CssBaseline />
@@ -69,12 +67,44 @@ function App() {
                   <Route path="/gamestack/join" element={<JoinGameStacks />} />
                 </Routes>
               </Router>
-              {/* <p>Your token is: {token}</p> */}
-              <button onClick={signOut}>Sign out</button>
             </GameStackContext.Provider>
           </ThemeProvider>
+        ) : (
+          <Authenticator
+          // socialProviders={["apple", "facebook", "google"]}
+          // hideSignUp
+          >
+            {({ signOut, user }) => (
+              <ThemeProvider theme={theme}>
+                <GameStackContext.Provider value={gameStack}>
+                  <CssBaseline />
+
+                  <Router>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+
+                      <Route path="/gamestacks" element={<ListGameStacks />} />
+                      <Route
+                        path="/gamestacks/add"
+                        element={<AddGameStacks />}
+                      />
+                      <Route
+                        path="/gamestacks/update"
+                        element={<UpdateGameStacks />}
+                      />
+                      <Route
+                        path="/gamestack/join"
+                        element={<JoinGameStacks />}
+                      />
+                    </Routes>
+                  </Router>
+                  <button onClick={signOut}>Sign out</button>
+                </GameStackContext.Provider>
+              </ThemeProvider>
+            )}
+          </Authenticator>
         )}
-      </Authenticator>
+      </div>
     </div>
   );
 }
