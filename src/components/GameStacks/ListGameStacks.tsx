@@ -31,6 +31,7 @@ function ListGameStacks() {
 
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";
+  const deleteGameStackEndpoint = apiHttpsUrl + "/gamestack";
 
   const gameStack = useGameStackContext();
 
@@ -78,8 +79,21 @@ function ListGameStacks() {
     navigate("/gamestacks/add");
   }
 
-  function deleteGameStack() {
-    navigate("/gamestacks/delete");
+  function deleteGameStack(_id: string) {
+    try {
+      axios
+        .delete(deleteGameStackEndpoint + _id, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setGameStacks(res.data);
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function createGameStack() {
@@ -180,7 +194,13 @@ function ListGameStacks() {
                     {" "}
                     Update{" "}
                   </Button>
-                  <Button size="small" color="error" onClick={() => {}}>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => {
+                      deleteGameStack(gamestack[0]["ID"]);
+                    }}
+                  >
                     {" "}
                     Delete{" "}
                   </Button>
