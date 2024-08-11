@@ -64,7 +64,7 @@ function ListGameStacks() {
         })
         .then((res) => {
           console.log(res.data);
-          // setGameStacks(res.data);
+          setGameStacks(res.data);
         });
     } catch (error) {
       console.error(error);
