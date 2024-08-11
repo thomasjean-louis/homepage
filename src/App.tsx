@@ -48,8 +48,9 @@ function App() {
   return (
     <div className="App">
       <div>
-        {location.hostname === "localhost" ||
-        location.hostname === "127.0.0.1" ? (
+        {true &&
+        (location.hostname === "localhost" ||
+          location.hostname === "127.0.0.1") ? (
           <ThemeProvider theme={theme}>
             <GameStackContext.Provider value={gameStack}>
               <CssBaseline />
@@ -71,8 +72,8 @@ function App() {
           </ThemeProvider>
         ) : (
           <Authenticator
-          // socialProviders={["apple", "facebook", "google"]}
-          // hideSignUp
+            // socialProviders={["apple", "facebook", "google"]}
+            hideSignUp
           >
             {({ signOut, user }) => (
               <ThemeProvider theme={theme}>
