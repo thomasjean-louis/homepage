@@ -6,7 +6,7 @@ function Home() {
     <div>
       <h1>Home</h1>
       <Link component={RouterLink} variant="body1" to="/gamestacks">
-        GameStacks
+        GameStacks e
       </Link>
     </div>
   );
