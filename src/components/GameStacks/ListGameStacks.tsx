@@ -24,7 +24,7 @@ function ListGameStacks() {
   var apiHttpsUrl = "default";
 
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    apiHttpsUrl = "https://" + "api.533266981053.realhandsonlabs.net";
+    apiHttpsUrl = "https://" + "api.d.thomasjeanlouis.com";
   } else {
     apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
   }
@@ -32,6 +32,8 @@ function ListGameStacks() {
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";
   const deleteGameStackEndpoint = apiHttpsUrl + "/gamestack";
+  const startGameServerEndpoint = apiHttpsUrl + "/startgameserver";
+  const stopGameServerEndpoint = apiHttpsUrl + "/stopgameserver";
 
   const gameStack = useGameStackContext();
 
@@ -82,6 +84,28 @@ function ListGameStacks() {
   function deleteGameStack(_id: string) {
     try {
       axios.delete(deleteGameStackEndpoint + "/" + _id).then((res) => {
+        console.log(res.data);
+        refreshGameStacks();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function startGameServer(_id: string) {
+    try {
+      axios.post(startGameServerEndpoint + "/" + _id).then((res) => {
+        console.log(res.data);
+        refreshGameStacks();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function stopGameServer(_id: string) {
+    try {
+      axios.post(stopGameServerEndpoint + "/" + _id).then((res) => {
         console.log(res.data);
         refreshGameStacks();
       });
@@ -152,20 +176,45 @@ function ListGameStacks() {
                   <Typography>{gamestack[0]["ServerLink"]}</Typography>
                 </CardContent>
                 <CardActions>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      joinGameStack(
-                        gamestack[0]["ID"],
-                        Number(gamestack[0]["Capacity"]),
-                        gamestack[0]["ServerLink"]
-                      );
-                    }}
-                  >
-                    {" "}
-                    Join{" "}
-                  </Button>
-                  <Button
+                  {gamestack[0]["IsUp"] === true ? (
+                    <div>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          joinGameStack(
+                            gamestack[0]["ID"],
+                            Number(gamestack[0]["Capacity"]),
+                            gamestack[0]["ServerLink"]
+                          );
+                        }}
+                      >
+                        {" "}
+                        Join{" "}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          stopGameServer(gamestack[0]["ID"]);
+                        }}
+                      >
+                        {" "}
+                        Stop{" "}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          startGameServer(gamestack[0]["ID"]);
+                        }}
+                      >
+                        {" "}
+                        Start{" "}
+                      </Button>
+                    </div>
+                  )}
+                  {/* <Button
                     size="small"
                     onClick={() => {
                       updateGameStack(
@@ -177,7 +226,7 @@ function ListGameStacks() {
                   >
                     {" "}
                     Update{" "}
-                  </Button>
+                  </Button> */}
                   <Button
                     size="small"
                     color="error"
