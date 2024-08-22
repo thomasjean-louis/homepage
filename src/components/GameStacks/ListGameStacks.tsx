@@ -176,7 +176,7 @@ function ListGameStacks() {
                   <Typography>{gamestack[0]["ServerLink"]}</Typography>
                 </CardContent>
                 <CardActions>
-                  {gamestack[0]["IsUp"] === true ? (
+                  {gamestack[0]["ServerStatus"] === "pending" ? (
                     <div>
                       <Button
                         variant="contained"
