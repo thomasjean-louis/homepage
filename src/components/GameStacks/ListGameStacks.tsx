@@ -154,6 +154,16 @@ function ListGameStacks() {
     navigate("/gamestack/join", {});
   }
 
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
+  //     fetchGameStacks();
+  //   }, 8000);
+  //   return () => {
+  //     // clean up
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
+
   useEffect(() => {
     fetchGameStacks();
   }, []);
