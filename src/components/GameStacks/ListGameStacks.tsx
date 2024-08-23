@@ -12,6 +12,10 @@ import {
 import axios from "axios";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
+import CircleIcon from "@mui/icons-material/Circle";
+import { green } from "@mui/material/colors";
+import { orange } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { GameStack } from "../../App";
 import { useGameStackContext } from "./GameStackContext";
@@ -114,6 +118,20 @@ function ListGameStacks() {
     }
   }
 
+  function setStatusColor(_status: string) {
+    var color = "";
+
+    if (_status == "running") {
+      color = green[500];
+    } else if (_status == "pending") {
+      color = orange[500];
+    } else {
+      color = red[500];
+    }
+
+    return color;
+  }
+
   async function createGameStack() {
     try {
       axios
@@ -173,10 +191,19 @@ function ListGameStacks() {
             >
               <Card sx={{ border: "1px solid gray" }}>
                 <CardContent>
-                  <Typography>{gamestack[0]["ServerLink"]}</Typography>
+                  <Typography>
+                    <IconButton
+                      sx={{
+                        color: setStatusColor(gamestack[0]["ServerStatus"]),
+                      }}
+                    >
+                      <CircleIcon></CircleIcon>
+                    </IconButton>
+                    {gamestack[0]["ServerLink"]}
+                  </Typography>
                 </CardContent>
                 <CardActions>
-                  {gamestack[0]["ServerStatus"] === "pending" ? (
+                  {gamestack[0]["ServerStatus"] === "running" ? (
                     <div>
                       <Button
                         variant="contained"
