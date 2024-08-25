@@ -32,6 +32,8 @@ function Home() {
     }
   };
 
+  SetUserAttributes;
+
   return (
     <div>
       <h1>Home</h1>
