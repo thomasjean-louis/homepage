@@ -56,8 +56,6 @@ function App() {
     role: "defaultRole",
   });
 
-  const navigate = useNavigate();
-
   return (
     <div className="App">
       <div>
