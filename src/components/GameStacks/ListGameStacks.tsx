@@ -29,6 +29,7 @@ function ListGameStacks() {
   const [gamestacks, setGameStacks] = useState([]);
   const session = useSessionContext();
 
+  console.log("session " + session.role);
   var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
