@@ -1,7 +1,37 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import { fetchAuthSession } from "aws-amplify/auth";
+import { useSessionContext } from "../GameStacks/SessionContext";
 
 function Home() {
+  const session = useSessionContext();
+
+  function updateSessionContext(_role: string) {
+    session.role = _role;
+  }
+
+  const SetUserAttributes = async () => {
+    try {
+      // const userAttributes = await fetchUserAttributes();
+      const { tokens } = await fetchAuthSession();
+      if (tokens !== undefined) {
+        console.log(
+          "user belongs to following groups: " +
+            tokens.accessToken.payload["cognito:groups"]
+        );
+        updateSessionContext("" + tokens.accessToken.payload["cognito:groups"]);
+      } else {
+        console.log("couldn't get cognito token");
+      }
+
+      console.log("context role : " + session.role);
+
+      // console.log("role:", userAttributes.role);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div>
       <h1>Home</h1>

@@ -55,30 +55,6 @@ function App() {
     role: "defaultRole",
   });
 
-  function updateSessionContext(_role: string) {
-    session.role = _role;
-  }
-
-  const printUserAttributes = async () => {
-    try {
-      // const userAttributes = await fetchUserAttributes();
-      const { tokens } = await fetchAuthSession();
-      if (tokens !== undefined) {
-        console.log(
-          "user belongs to following groups: " +
-            tokens.accessToken.payload["cognito:groups"]
-        );
-        updateSessionContext("" + tokens.accessToken.payload["cognito:groups"]);
-      } else {
-        console.log("couldn't get cognito token");
-      }
-
-      // console.log("role:", userAttributes.role);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <div className="App">
       <div>
@@ -138,9 +114,9 @@ function App() {
                       </Routes>
                     </Router>
                     <button onClick={signOut}>Sign out</button>
-                    <button onClick={printUserAttributes}>
+                    {/* <button onClick={printUserAttributes}>
                       Print Attributes
-                    </button>
+                    </button> */}
                   </GameStackContext.Provider>
                 </SessionContext.Provider>
               </ThemeProvider>
