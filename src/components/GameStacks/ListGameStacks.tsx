@@ -20,10 +20,16 @@ import { useNavigate } from "react-router-dom";
 import { GameStack } from "../../App";
 import { useGameStackContext } from "./GameStackContext";
 
+import { fetchAuthSession } from "aws-amplify/auth";
+import { useSessionContext } from "./SessionContext";
+
 function ListGameStacks() {
   const navigate = useNavigate();
 
   const [gamestacks, setGameStacks] = useState([]);
+  const session = useSessionContext();
+
+  var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
 
@@ -181,6 +187,7 @@ function ListGameStacks() {
         </IconButton>
         <Button
           variant="contained"
+          disabled={!isAdmin}
           onClick={() => {
             createGameStack();
           }}
@@ -230,6 +237,7 @@ function ListGameStacks() {
                       </Button>
                       <Button
                         variant="contained"
+                        disabled={!isAdmin}
                         onClick={() => {
                           stopGameServer(gamestack[0]["ID"]);
                         }}
@@ -266,6 +274,7 @@ function ListGameStacks() {
                   </Button> */}
                   <Button
                     size="small"
+                    disabled={!isAdmin}
                     color="error"
                     onClick={() => {
                       deleteGameStack(gamestack[0]["ID"]);

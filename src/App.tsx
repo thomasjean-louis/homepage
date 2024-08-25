@@ -32,11 +32,16 @@ import AddGameStacks from "./components/GameStacks/CreateGameStack";
 import UpdateGameStacks from "./components/GameStacks/UpdateGameStack";
 import { GameStackContext } from "./components/GameStacks/GameStackContext";
 import JoinGameStacks from "./components/GameStacks/JoinGameStack";
+import { SessionContext } from "./components/GameStacks/SessionContext";
 
 export interface GameStack {
   id: string;
   capacity: number;
   game_server_https_url: string;
+}
+
+export interface Session {
+  role: string;
 }
 
 function App() {
@@ -45,6 +50,14 @@ function App() {
     capacity: -1,
     game_server_https_url: "defaultUrl",
   });
+
+  const [session, setSession] = useState<Session>({
+    role: "defaultRole",
+  });
+
+  function updateSessionContext(_role: string) {
+    session.role = _role;
+  }
 
   const printUserAttributes = async () => {
     try {
@@ -55,6 +68,7 @@ function App() {
           "user belongs to following groups: " +
             tokens.accessToken.payload["cognito:groups"]
         );
+        updateSessionContext("" + tokens.accessToken.payload["cognito:groups"]);
       } else {
         console.log("couldn't get cognito token");
       }
@@ -97,33 +111,38 @@ function App() {
           >
             {({ signOut, user }) => (
               <ThemeProvider theme={theme}>
-                <GameStackContext.Provider value={gameStack}>
-                  <CssBaseline />
+                <SessionContext.Provider value={session}>
+                  <GameStackContext.Provider value={gameStack}>
+                    <CssBaseline />
 
-                  <Router>
-                    <Routes>
-                      <Route path="/" element={<Home />} />
+                    <Router>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
 
-                      <Route path="/gamestacks" element={<ListGameStacks />} />
-                      <Route
-                        path="/gamestacks/add"
-                        element={<AddGameStacks />}
-                      />
-                      <Route
-                        path="/gamestacks/update"
-                        element={<UpdateGameStacks />}
-                      />
-                      <Route
-                        path="/gamestack/join"
-                        element={<JoinGameStacks />}
-                      />
-                    </Routes>
-                  </Router>
-                  <button onClick={signOut}>Sign out</button>
-                  <button onClick={printUserAttributes}>
-                    Print Attributes
-                  </button>
-                </GameStackContext.Provider>
+                        <Route
+                          path="/gamestacks"
+                          element={<ListGameStacks />}
+                        />
+                        <Route
+                          path="/gamestacks/add"
+                          element={<AddGameStacks />}
+                        />
+                        <Route
+                          path="/gamestacks/update"
+                          element={<UpdateGameStacks />}
+                        />
+                        <Route
+                          path="/gamestack/join"
+                          element={<JoinGameStacks />}
+                        />
+                      </Routes>
+                    </Router>
+                    <button onClick={signOut}>Sign out</button>
+                    <button onClick={printUserAttributes}>
+                      Print Attributes
+                    </button>
+                  </GameStackContext.Provider>
+                </SessionContext.Provider>
               </ThemeProvider>
             )}
           </Authenticator>
