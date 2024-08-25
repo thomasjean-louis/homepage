@@ -33,6 +33,7 @@ import UpdateGameStacks from "./components/GameStacks/UpdateGameStack";
 import { GameStackContext } from "./components/GameStacks/GameStackContext";
 import JoinGameStacks from "./components/GameStacks/JoinGameStack";
 import { SessionContext } from "./components/GameStacks/SessionContext";
+import { Hub } from "aws-amplify/utils";
 
 export interface GameStack {
   id: string;
@@ -54,6 +55,26 @@ function App() {
   const [session, setSession] = useState<Session>({
     role: "defaultRole",
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = Hub.listen("auth", ({ payload }) => {
+      switch (payload.event) {
+        case "signInWithRedirect":
+          navigate("/", {});
+          break;
+        case "signInWithRedirect_failure":
+          console.log("error during Oauth flow");
+          break;
+        case "customOAuthState":
+          console.log("customOAuthState");
+
+          break;
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <div className="App">
