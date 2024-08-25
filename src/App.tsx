@@ -5,6 +5,7 @@ import viteLogo from "/vite.svg";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { fetchAuthSession } from "aws-amplify/auth";
+import { fetchUserAttributes } from "@aws-amplify/auth";
 
 // let token = (await fetchAuthSession()).tokens?.idToken?.toString();
 
@@ -44,6 +45,15 @@ function App() {
     capacity: -1,
     game_server_https_url: "defaultUrl",
   });
+
+  const printUserAttributes = async () => {
+    try {
+      const userAttributes = await fetchUserAttributes();
+      console.log("role:", userAttributes.role);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className="App">
