@@ -48,8 +48,18 @@ function App() {
 
   const printUserAttributes = async () => {
     try {
-      const userAttributes = await fetchUserAttributes();
-      console.log("role:", userAttributes.role);
+      // const userAttributes = await fetchUserAttributes();
+      const { tokens } = await fetchAuthSession();
+      if (tokens !== undefined) {
+        console.log(
+          "user belongs to following groups: " +
+            tokens.accessToken.payload["cognito:groups"]
+        );
+      } else {
+        console.log("couldn't get cognito token");
+      }
+
+      // console.log("role:", userAttributes.role);
     } catch (e) {
       console.log(e);
     }
@@ -110,6 +120,9 @@ function App() {
                     </Routes>
                   </Router>
                   <button onClick={signOut}>Sign out</button>
+                  <button onClick={printUserAttributes}>
+                    Print Attributes
+                  </button>
                 </GameStackContext.Provider>
               </ThemeProvider>
             )}
