@@ -58,24 +58,6 @@ function App() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      switch (payload.event) {
-        case "signInWithRedirect":
-          navigate("/", {});
-          break;
-        case "signInWithRedirect_failure":
-          console.log("error during Oauth flow");
-          break;
-        case "customOAuthState":
-          console.log("customOAuthState");
-
-          break;
-      }
-    });
-    return unsubscribe;
-  }, []);
-
   return (
     <div className="App">
       <div>
