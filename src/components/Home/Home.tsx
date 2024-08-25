@@ -32,7 +32,7 @@ function Home() {
     }
   };
 
-  SetUserAttributes;
+  SetUserAttributes();
 
   return (
     <div>

@@ -62,23 +62,28 @@ function App() {
         (location.hostname === "localhost" ||
           location.hostname === "127.0.0.1") ? (
           <ThemeProvider theme={theme}>
-            <GameStackContext.Provider value={gameStack}>
-              <CssBaseline />
+            <SessionContext.Provider value={session}>
+              <GameStackContext.Provider value={gameStack}>
+                <CssBaseline />
 
-              <Router>
-                <Routes>
-                  <Route path="/" element={<Home />} />
+                <Router>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
 
-                  <Route path="/gamestacks" element={<ListGameStacks />} />
-                  <Route path="/gamestacks/add" element={<AddGameStacks />} />
-                  <Route
-                    path="/gamestacks/update"
-                    element={<UpdateGameStacks />}
-                  />
-                  <Route path="/gamestack/join" element={<JoinGameStacks />} />
-                </Routes>
-              </Router>
-            </GameStackContext.Provider>
+                    <Route path="/gamestacks" element={<ListGameStacks />} />
+                    <Route path="/gamestacks/add" element={<AddGameStacks />} />
+                    <Route
+                      path="/gamestacks/update"
+                      element={<UpdateGameStacks />}
+                    />
+                    <Route
+                      path="/gamestack/join"
+                      element={<JoinGameStacks />}
+                    />
+                  </Routes>
+                </Router>
+              </GameStackContext.Provider>
+            </SessionContext.Provider>
           </ThemeProvider>
         ) : (
           <Authenticator
