@@ -161,10 +161,32 @@ function ListGameStacks() {
     navigate("/gamestack/join", {});
   }
 
+  function test() {}
+
+  function SetTimerInterval() {}
+
+  // function GetServerTimeRemaining(_gamestack: GameStack,_datetime: string) {
+  function GetServerTimeRemaining(_datetime: string) {
+    var endDateTime = new Date(_datetime + "Z");
+
+    let result =
+      "Server will be stopped at " +
+      endDateTime.toLocaleString() +
+      " (" +
+      Intl.DateTimeFormat().resolvedOptions().timeZone +
+      ")";
+
+    return result;
+  }
+
   // useEffect(() => {
   //   const intervalCall = setInterval(() => {
-  //     fetchGameStacks();
-  //   }, 8000);
+  //     // TickGameStacks();
+  //     if (tmpRestdata != undefined) {
+  //       console.log("defined");
+  //       setGameStacks(tmpRestdata);
+  //     }
+  //   }, 1000);
   //   return () => {
   //     // clean up
   //     clearInterval(intervalCall);
@@ -218,6 +240,8 @@ function ListGameStacks() {
                       <CircleIcon></CircleIcon>
                     </IconButton>
                     {gamestack[0]["ServerLink"]}
+                    <br></br>
+                    {GetServerTimeRemaining(gamestack[0]["StopServerTime"])}
                   </Typography>
                 </CardContent>
                 <CardActions>
