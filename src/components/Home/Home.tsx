@@ -20,6 +20,9 @@ function Home() {
           "user belongs to following groups: " +
             tokens.accessToken.payload["cognito:groups"]
         );
+
+        console.log("token " + tokens.accessToken.toString());
+
         for (let key in tokens.accessToken.payload) {
           let value = tokens.accessToken.payload[key];
           console.log(key + " " + value);
@@ -27,7 +30,7 @@ function Home() {
 
         updateSessionContext(
           "" + tokens.accessToken.payload["cognito:groups"],
-          "" + tokens.accessToken.payload["jwtToken"]
+          tokens.accessToken.toString()
         );
       } else {
         console.log("couldn't get cognito token");

@@ -74,6 +74,7 @@ function ListGameStacks() {
         .get(getGameStacksEndpoint, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + session.token,
           },
         })
         .then((res) => {
