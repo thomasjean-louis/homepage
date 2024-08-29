@@ -30,7 +30,7 @@ function ListGameStacks() {
   const session = useSessionContext();
 
   console.log("session " + session.role);
-  console.log("token " + session.token);
+  console.log("token ${session.token}");
   var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
@@ -74,7 +74,7 @@ function ListGameStacks() {
         .get(getGameStacksEndpoint, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + session.token,
+            Authorization: `Bearer ${session.token}`,
           },
         })
         .then((res) => {
