@@ -1,7 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { fetchAuthSession } from "aws-amplify/auth";
-import Auth from "@aws-amplify/auth";
 import { useSessionContext } from "../GameStacks/SessionContext";
 
 function Home() {
@@ -21,6 +20,7 @@ function Home() {
           "user belongs to following groups: " +
             tokens.accessToken.payload["cognito:groups"]
         );
+        console.log("Access Token:", tokens.accessToken.toString());
 
         console.log("token " + tokens.accessToken.toString());
 
@@ -38,15 +38,6 @@ function Home() {
       }
 
       console.log("context role : " + session.role);
-
-      Auth.currentSession().then((res) => {
-        let accessToken = res.getAccessToken();
-        let jwt = accessToken.getJwtToken();
-
-        //You can print them to see the full objects
-        console.log(`myAccessToken: ${JSON.stringify(accessToken)}`);
-        console.log(`myJwt: ${jwt}`);
-      });
 
       // console.log("role:", userAttributes.role);
     } catch (e) {
