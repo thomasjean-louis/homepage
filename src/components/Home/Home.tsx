@@ -16,19 +16,6 @@ function Home() {
       // const userAttributes = await fetchUserAttributes();
       const { tokens } = await fetchAuthSession();
       if (tokens !== undefined) {
-        console.log(
-          "user belongs to following groups: " +
-            tokens.accessToken.payload["cognito:groups"]
-        );
-        console.log("Access Token:", tokens.accessToken.toString());
-
-        console.log("token " + tokens.accessToken.toString());
-
-        for (let key in tokens.accessToken.payload) {
-          let value = tokens.accessToken.payload[key];
-          console.log(key + " " + value);
-        }
-
         updateSessionContext(
           "" + tokens.accessToken.payload["cognito:groups"],
           tokens.accessToken.toString()
