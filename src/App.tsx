@@ -43,6 +43,7 @@ export interface GameStack {
 
 export interface Session {
   role: string;
+  token: string;
 }
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
 
   const [session, setSession] = useState<Session>({
     role: "defaultRole",
+    token: "defaultToken",
   });
 
   return (

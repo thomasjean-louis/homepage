@@ -6,8 +6,9 @@ import { useSessionContext } from "../GameStacks/SessionContext";
 function Home() {
   const session = useSessionContext();
 
-  function updateSessionContext(_role: string) {
+  function updateSessionContext(_role: string, _token: string) {
     session.role = _role;
+    session.token = _token;
   }
 
   const SetUserAttributes = async () => {
@@ -19,7 +20,10 @@ function Home() {
           "user belongs to following groups: " +
             tokens.accessToken.payload["cognito:groups"]
         );
-        updateSessionContext("" + tokens.accessToken.payload["cognito:groups"]);
+        updateSessionContext(
+          "" + tokens.accessToken.payload["cognito:groups"],
+          "" + tokens.accessToken.payload["jwtToken"]
+        );
       } else {
         console.log("couldn't get cognito token");
       }
