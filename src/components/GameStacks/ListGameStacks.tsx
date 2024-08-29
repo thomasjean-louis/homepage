@@ -114,7 +114,7 @@ function ListGameStacks() {
   function startGameServer(_id: string) {
     try {
       axios
-        .post(startGameServerEndpoint + "/" + _id, {
+        .post(startGameServerEndpoint + "/" + _id, null, {
           headers: {
             Authorization: session.token,
           },
@@ -131,7 +131,7 @@ function ListGameStacks() {
   function stopGameServer(_id: string) {
     try {
       axios
-        .post(stopGameServerEndpoint + "/" + _id, {
+        .post(stopGameServerEndpoint + "/" + _id, null, {
           headers: {
             Authorization: session.token,
           },
@@ -162,7 +162,7 @@ function ListGameStacks() {
   async function createGameStack() {
     try {
       axios
-        .post(createGameStackEndpoint, {
+        .post(createGameStackEndpoint, null, {
           headers: {
             "Content-Type": "application/json",
             Authorization: session.token,
