@@ -96,10 +96,16 @@ function ListGameStacks() {
 
   function deleteGameStack(_id: string) {
     try {
-      axios.delete(deleteGameStackEndpoint + "/" + _id).then((res) => {
-        console.log(res.data);
-        refreshGameStacks();
-      });
+      axios
+        .delete(deleteGameStackEndpoint + "/" + _id, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
     } catch (error) {
       console.error(error);
     }
@@ -107,10 +113,16 @@ function ListGameStacks() {
 
   function startGameServer(_id: string) {
     try {
-      axios.post(startGameServerEndpoint + "/" + _id).then((res) => {
-        console.log(res.data);
-        refreshGameStacks();
-      });
+      axios
+        .post(startGameServerEndpoint + "/" + _id, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
     } catch (error) {
       console.error(error);
     }
@@ -118,10 +130,16 @@ function ListGameStacks() {
 
   function stopGameServer(_id: string) {
     try {
-      axios.post(stopGameServerEndpoint + "/" + _id).then((res) => {
-        console.log(res.data);
-        refreshGameStacks();
-      });
+      axios
+        .post(stopGameServerEndpoint + "/" + _id, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
     } catch (error) {
       console.error(error);
     }
@@ -147,6 +165,7 @@ function ListGameStacks() {
         .post(createGameStackEndpoint, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: session.token,
           },
         })
         .then((res) => {
