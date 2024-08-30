@@ -61,76 +61,41 @@ function App() {
   return (
     <div className="App">
       <div>
-        {true &&
-        (location.hostname === "localhost" ||
-          location.hostname === "127.0.0.1") ? (
-          <ThemeProvider theme={theme}>
-            <SessionContext.Provider value={session}>
-              <GameStackContext.Provider value={gameStack}>
-                <CssBaseline />
+        <Authenticator hideSignUp>
+          {({ signOut, user }) => (
+            <ThemeProvider theme={theme}>
+              <SessionContext.Provider value={session}>
+                <GameStackContext.Provider value={gameStack}>
+                  <CssBaseline />
 
-                <Router>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
+                  <Router>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
 
-                    <Route path="/gamestacks" element={<ListGameStacks />} />
-                    <Route path="/gamestacks/add" element={<AddGameStacks />} />
-                    <Route
-                      path="/gamestacks/update"
-                      element={<UpdateGameStacks />}
-                    />
-                    <Route
-                      path="/gamestack/join"
-                      element={<JoinGameStacks />}
-                    />
-                  </Routes>
-                </Router>
-              </GameStackContext.Provider>
-            </SessionContext.Provider>
-          </ThemeProvider>
-        ) : (
-          <Authenticator
-            // socialProviders={["apple", "facebook", "google"]}
-            hideSignUp
-          >
-            {({ signOut, user }) => (
-              <ThemeProvider theme={theme}>
-                <SessionContext.Provider value={session}>
-                  <GameStackContext.Provider value={gameStack}>
-                    <CssBaseline />
-
-                    <Router>
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-
-                        <Route
-                          path="/gamestacks"
-                          element={<ListGameStacks />}
-                        />
-                        <Route
-                          path="/gamestacks/add"
-                          element={<AddGameStacks />}
-                        />
-                        <Route
-                          path="/gamestacks/update"
-                          element={<UpdateGameStacks />}
-                        />
-                        <Route
-                          path="/gamestack/join"
-                          element={<JoinGameStacks />}
-                        />
-                      </Routes>
-                    </Router>
-                    <button onClick={signOut}>Sign out</button>
-                    {/* <button onClick={printUserAttributes}>
+                      <Route path="/gamestacks" element={<ListGameStacks />} />
+                      <Route
+                        path="/gamestacks/add"
+                        element={<AddGameStacks />}
+                      />
+                      <Route
+                        path="/gamestacks/update"
+                        element={<UpdateGameStacks />}
+                      />
+                      <Route
+                        path="/gamestack/join"
+                        element={<JoinGameStacks />}
+                      />
+                    </Routes>
+                  </Router>
+                  <button onClick={signOut}>Sign out</button>
+                  {/* <button onClick={printUserAttributes}>
                       Print Attributes
                     </button> */}
-                  </GameStackContext.Provider>
-                </SessionContext.Provider>
-              </ThemeProvider>
-            )}
-          </Authenticator>
-        )}
+                </GameStackContext.Provider>
+              </SessionContext.Provider>
+            </ThemeProvider>
+          )}
+        </Authenticator>
       </div>
     </div>
   );

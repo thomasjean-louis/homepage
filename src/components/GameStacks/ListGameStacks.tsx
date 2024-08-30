@@ -1,4 +1,11 @@
-import { SetStateAction, useContext, useEffect, useState, useRef } from "react";
+import {
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  RefObject,
+} from "react";
 
 import {
   Card,
@@ -33,13 +40,8 @@ function ListGameStacks() {
   var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
-  let startBtnRef = useRef<HTMLButtonElement>(null);
 
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    apiHttpsUrl = "https://" + "api.d.thomasjeanlouis.com";
-  } else {
-    apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
-  }
+  apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
 
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";
@@ -112,9 +114,13 @@ function ListGameStacks() {
   }
 
   function startGameServer(_id: string) {
-    if (startBtnRef.current && !startBtnRef.current.disabled) {
-      startBtnRef.current.disabled = true;
+    console.log("start");
+
+    if (document != null && document.getElementById("start-" + _id) != null) {
+      console.log("button found");
+      (document.getElementById("start-" + _id)! as any).disabled = "true";
     }
+
     try {
       axios
         .post(startGameServerEndpoint + "/" + _id, null, {
@@ -132,6 +138,13 @@ function ListGameStacks() {
   }
 
   function stopGameServer(_id: string) {
+    console.log("stop");
+
+    if (document != null && document.getElementById("stop-" + _id) != null) {
+      console.log("button found");
+      (document.getElementById("stop-" + _id)! as any).disabled = "true";
+    }
+
     try {
       axios
         .post(stopGameServerEndpoint + "/" + _id, null, {
@@ -293,6 +306,7 @@ function ListGameStacks() {
                       </Button>
                       <Button
                         variant="contained"
+                        id={"stop-" + gamestack[0]["ID"]}
                         disabled={!isAdmin}
                         onClick={() => {
                           stopGameServer(gamestack[0]["ID"]);
@@ -307,7 +321,7 @@ function ListGameStacks() {
                       {gamestack[0]["ServerStatus"] === "stopped" ? (
                         <Button
                           variant="contained"
-                          ref={startBtnRef}
+                          id={"start-" + gamestack[0]["ID"]}
                           onClick={() => {
                             startGameServer(gamestack[0]["ID"]);
                           }}
