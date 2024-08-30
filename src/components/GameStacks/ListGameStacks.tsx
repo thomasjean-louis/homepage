@@ -186,7 +186,11 @@ function ListGameStacks() {
   function SetTimerInterval() {}
 
   // function GetServerTimeRemaining(_gamestack: GameStack,_datetime: string) {
-  function GetServerTimeRemaining(_datetime: string) {
+  function GetServerTimeRemaining(_status: string, _datetime: string) {
+    if (_status != "running") {
+      return "";
+    }
+
     var endDateTime = new Date(_datetime + "Z");
 
     let result =
@@ -261,7 +265,10 @@ function ListGameStacks() {
                     </IconButton>
                     {gamestack[0]["ServerLink"]}
                     <br></br>
-                    {GetServerTimeRemaining(gamestack[0]["StopServerTime"])}
+                    {GetServerTimeRemaining(
+                      gamestack[0]["ServerStatus"],
+                      gamestack[0]["StopServerTime"]
+                    )}
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -293,30 +300,21 @@ function ListGameStacks() {
                     </div>
                   ) : (
                     <div>
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          startGameServer(gamestack[0]["ID"]);
-                        }}
-                      >
-                        {" "}
-                        Start{" "}
-                      </Button>
+                      {gamestack[0]["ServerStatus"] === "stopped" ? (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            startGameServer(gamestack[0]["ID"]);
+                          }}
+                        >
+                          {" "}
+                          Start{" "}
+                        </Button>
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                   )}
-                  {/* <Button
-                    size="small"
-                    onClick={() => {
-                      updateGameStack(
-                        gamestack[0]["ID"],
-                        Number(gamestack[0]["Capacity"]),
-                        gamestack[0]["ServerLink"]
-                      );
-                    }}
-                  >
-                    {" "}
-                    Update{" "}
-                  </Button> */}
                   <Button
                     size="small"
                     disabled={!isAdmin}
