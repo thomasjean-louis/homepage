@@ -5,6 +5,7 @@ import viteLogo from "/vite.svg";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { fetchAuthSession } from "aws-amplify/auth";
+import { fetchUserAttributes } from "@aws-amplify/auth";
 
 // let token = (await fetchAuthSession()).tokens?.idToken?.toString();
 
@@ -31,11 +32,18 @@ import AddGameStacks from "./components/GameStacks/CreateGameStack";
 import UpdateGameStacks from "./components/GameStacks/UpdateGameStack";
 import { GameStackContext } from "./components/GameStacks/GameStackContext";
 import JoinGameStacks from "./components/GameStacks/JoinGameStack";
+import { SessionContext } from "./components/GameStacks/SessionContext";
+import { Hub } from "aws-amplify/utils";
 
 export interface GameStack {
   id: string;
   capacity: number;
   game_server_https_url: string;
+}
+
+export interface Session {
+  role: string;
+  token: string;
 }
 
 function App() {
@@ -45,38 +53,18 @@ function App() {
     game_server_https_url: "defaultUrl",
   });
 
+  const [session, setSession] = useState<Session>({
+    role: "defaultRole",
+    token: "defaultToken",
+  });
+
   return (
     <div className="App">
       <div>
-        {true &&
-        (location.hostname === "localhost" ||
-          location.hostname === "127.0.0.1") ? (
-          <ThemeProvider theme={theme}>
-            <GameStackContext.Provider value={gameStack}>
-              <CssBaseline />
-
-              <Router>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-
-                  <Route path="/gamestacks" element={<ListGameStacks />} />
-                  <Route path="/gamestacks/add" element={<AddGameStacks />} />
-                  <Route
-                    path="/gamestacks/update"
-                    element={<UpdateGameStacks />}
-                  />
-                  <Route path="/gamestack/join" element={<JoinGameStacks />} />
-                </Routes>
-              </Router>
-            </GameStackContext.Provider>
-          </ThemeProvider>
-        ) : (
-          <Authenticator
-            // socialProviders={["apple", "facebook", "google"]}
-            hideSignUp
-          >
-            {({ signOut, user }) => (
-              <ThemeProvider theme={theme}>
+        <Authenticator hideSignUp>
+          {({ signOut, user }) => (
+            <ThemeProvider theme={theme}>
+              <SessionContext.Provider value={session}>
                 <GameStackContext.Provider value={gameStack}>
                   <CssBaseline />
 
@@ -100,11 +88,14 @@ function App() {
                     </Routes>
                   </Router>
                   <button onClick={signOut}>Sign out</button>
+                  {/* <button onClick={printUserAttributes}>
+                      Print Attributes
+                    </button> */}
                 </GameStackContext.Provider>
-              </ThemeProvider>
-            )}
-          </Authenticator>
-        )}
+              </SessionContext.Provider>
+            </ThemeProvider>
+          )}
+        </Authenticator>
       </div>
     </div>
   );

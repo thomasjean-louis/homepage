@@ -1,4 +1,11 @@
-import { SetStateAction, useContext, useEffect, useState } from "react";
+import {
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  RefObject,
+} from "react";
 
 import {
   Card,
@@ -12,26 +19,35 @@ import {
 import axios from "axios";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
+import CircleIcon from "@mui/icons-material/Circle";
+import { green } from "@mui/material/colors";
+import { orange } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { GameStack } from "../../App";
 import { useGameStackContext } from "./GameStackContext";
+
+import { fetchAuthSession } from "aws-amplify/auth";
+import { useSessionContext } from "./SessionContext";
 
 function ListGameStacks() {
   const navigate = useNavigate();
 
   const [gamestacks, setGameStacks] = useState([]);
+  const session = useSessionContext();
+
+  console.log("session " + session.role);
+  var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
 
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    apiHttpsUrl = "https://" + "api.533266981053.realhandsonlabs.net";
-  } else {
-    apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
-  }
+  apiHttpsUrl = "https://" + import.meta.env.VITE_API_HTTPS_URL;
 
   const getGameStacksEndpoint = apiHttpsUrl + "/gamestacks";
   const createGameStackEndpoint = apiHttpsUrl + "/gamestack";
   const deleteGameStackEndpoint = apiHttpsUrl + "/gamestack";
+  const startGameServerEndpoint = apiHttpsUrl + "/startgameserver";
+  const stopGameServerEndpoint = apiHttpsUrl + "/stopgameserver";
 
   const gameStack = useGameStackContext();
 
@@ -60,6 +76,7 @@ function ListGameStacks() {
         .get(getGameStacksEndpoint, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: session.token,
           },
         })
         .then((res) => {
@@ -81,21 +98,90 @@ function ListGameStacks() {
 
   function deleteGameStack(_id: string) {
     try {
-      axios.delete(deleteGameStackEndpoint + "/" + _id).then((res) => {
-        console.log(res.data);
-        refreshGameStacks();
-      });
+      axios
+        .delete(deleteGameStackEndpoint + "/" + _id, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
     } catch (error) {
       console.error(error);
     }
   }
 
+  function startGameServer(_id: string) {
+    console.log("start");
+
+    if (document != null && document.getElementById("start-" + _id) != null) {
+      console.log("button found");
+      (document.getElementById("start-" + _id)! as any).disabled = "true";
+    }
+
+    try {
+      axios
+        .post(startGameServerEndpoint + "/" + _id, null, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function stopGameServer(_id: string) {
+    console.log("stop");
+
+    if (document != null && document.getElementById("stop-" + _id) != null) {
+      console.log("button found");
+      (document.getElementById("stop-" + _id)! as any).disabled = "true";
+    }
+
+    try {
+      axios
+        .post(stopGameServerEndpoint + "/" + _id, null, {
+          headers: {
+            Authorization: session.token,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          refreshGameStacks();
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function setStatusColor(_status: string) {
+    var color = "";
+
+    if (_status == "running") {
+      color = green[500];
+    } else if (_status == "pending") {
+      color = orange[500];
+    } else {
+      color = red[500];
+    }
+
+    return color;
+  }
+
   async function createGameStack() {
     try {
       axios
-        .post(createGameStackEndpoint, {
+        .post(createGameStackEndpoint, null, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: session.token,
           },
         })
         .then((res) => {
@@ -111,6 +197,42 @@ function ListGameStacks() {
     updateGameStackContext(_id, _capacity, _serverLink);
     navigate("/gamestack/join", {});
   }
+
+  function test() {}
+
+  function SetTimerInterval() {}
+
+  // function GetServerTimeRemaining(_gamestack: GameStack,_datetime: string) {
+  function GetServerTimeRemaining(_status: string, _datetime: string) {
+    if (_status != "running") {
+      return "";
+    }
+
+    var endDateTime = new Date(_datetime + "Z");
+
+    let result =
+      "Server will be stopped at " +
+      endDateTime.toLocaleString() +
+      " (" +
+      Intl.DateTimeFormat().resolvedOptions().timeZone +
+      ")";
+
+    return result;
+  }
+
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
+  //     // TickGameStacks();
+  //     if (tmpRestdata != undefined) {
+  //       console.log("defined");
+  //       setGameStacks(tmpRestdata);
+  //     }
+  //   }, 1000);
+  //   return () => {
+  //     // clean up
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
 
   useEffect(() => {
     fetchGameStacks();
@@ -129,6 +251,7 @@ function ListGameStacks() {
         </IconButton>
         <Button
           variant="contained"
+          disabled={!isAdmin}
           onClick={() => {
             createGameStack();
           }}
@@ -149,37 +272,71 @@ function ListGameStacks() {
             >
               <Card sx={{ border: "1px solid gray" }}>
                 <CardContent>
-                  <Typography>{gamestack[0]["ServerLink"]}</Typography>
+                  <Typography>
+                    <IconButton
+                      sx={{
+                        color: setStatusColor(gamestack[0]["ServerStatus"]),
+                      }}
+                    >
+                      <CircleIcon></CircleIcon>
+                    </IconButton>
+                    {gamestack[0]["ServerLink"]}
+                    <br></br>
+                    {GetServerTimeRemaining(
+                      gamestack[0]["ServerStatus"],
+                      gamestack[0]["StopServerTime"]
+                    )}
+                  </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      joinGameStack(
-                        gamestack[0]["ID"],
-                        Number(gamestack[0]["Capacity"]),
-                        gamestack[0]["ServerLink"]
-                      );
-                    }}
-                  >
-                    {" "}
-                    Join{" "}
-                  </Button>
+                  {gamestack[0]["ServerStatus"] === "running" ? (
+                    <div>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          joinGameStack(
+                            gamestack[0]["ID"],
+                            Number(gamestack[0]["Capacity"]),
+                            gamestack[0]["ServerLink"]
+                          );
+                        }}
+                      >
+                        {" "}
+                        Join{" "}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        id={"stop-" + gamestack[0]["ID"]}
+                        disabled={!isAdmin}
+                        onClick={() => {
+                          stopGameServer(gamestack[0]["ID"]);
+                        }}
+                      >
+                        {" "}
+                        Stop{" "}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      {gamestack[0]["ServerStatus"] === "stopped" ? (
+                        <Button
+                          variant="contained"
+                          id={"start-" + gamestack[0]["ID"]}
+                          onClick={() => {
+                            startGameServer(gamestack[0]["ID"]);
+                          }}
+                        >
+                          {" "}
+                          Start{" "}
+                        </Button>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  )}
                   <Button
                     size="small"
-                    onClick={() => {
-                      updateGameStack(
-                        gamestack[0]["ID"],
-                        Number(gamestack[0]["Capacity"]),
-                        gamestack[0]["ServerLink"]
-                      );
-                    }}
-                  >
-                    {" "}
-                    Update{" "}
-                  </Button>
-                  <Button
-                    size="small"
+                    disabled={!isAdmin}
                     color="error"
                     onClick={() => {
                       deleteGameStack(gamestack[0]["ID"]);
