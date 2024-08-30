@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useEffect, useState } from "react";
+import { SetStateAction, useContext, useEffect, useState, useRef } from "react";
 
 import {
   Card,
@@ -33,6 +33,7 @@ function ListGameStacks() {
   var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
+  let startBtnRef = useRef<HTMLButtonElement>(null);
 
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     apiHttpsUrl = "https://" + "api.d.thomasjeanlouis.com";
@@ -111,6 +112,9 @@ function ListGameStacks() {
   }
 
   function startGameServer(_id: string) {
+    if (startBtnRef.current && !startBtnRef.current.disabled) {
+      startBtnRef.current.disabled = true;
+    }
     try {
       axios
         .post(startGameServerEndpoint + "/" + _id, null, {
@@ -303,6 +307,7 @@ function ListGameStacks() {
                       {gamestack[0]["ServerStatus"] === "stopped" ? (
                         <Button
                           variant="contained"
+                          ref={startBtnRef}
                           onClick={() => {
                             startGameServer(gamestack[0]["ID"]);
                           }}
