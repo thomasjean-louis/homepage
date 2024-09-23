@@ -220,23 +220,23 @@ function ListGameStacks() {
     return result;
   }
 
-  // useEffect(() => {
-  //   const intervalCall = setInterval(() => {
-  //     // TickGameStacks();
-  //     if (tmpRestdata != undefined) {
-  //       console.log("defined");
-  //       setGameStacks(tmpRestdata);
-  //     }
-  //   }, 1000);
-  //   return () => {
-  //     // clean up
-  //     clearInterval(intervalCall);
-  //   };
-  // }, []);
-
   useEffect(() => {
-    fetchGameStacks();
+    if (import.meta.env.VITE_DEPLOYMENT_BRANCH == "prod") {
+      const intervalCall = setInterval(() => {
+        fetchGameStacks();
+      }, 5000);
+      return () => {
+        // clean up
+        clearInterval(intervalCall);
+      };
+    } else {
+      fetchGameStacks();
+    }
   }, []);
+
+  // useEffect(() => {
+  //   fetchGameStacks();
+  // }, []);
 
   return (
     <div>
@@ -281,6 +281,8 @@ function ListGameStacks() {
                       <CircleIcon></CircleIcon>
                     </IconButton>
                     {gamestack[0]["ServerLink"]}
+                    <br></br>
+                    {gamestack[0]["Message"]}
                     <br></br>
                     {GetServerTimeRemaining(
                       gamestack[0]["ServerStatus"],
