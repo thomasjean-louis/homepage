@@ -30,6 +30,45 @@ import { useGameStackContext } from "./GameStackContext";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { useSessionContext } from "./SessionContext";
 
+import {makeStyles, createStyles} from "@mui/styles";
+import clsx from "clsx";
+
+// export const useStyles = makeStyles(() =>
+//   createStyles({
+//     rotateIcon: {
+//       animation: "$spin 0.75s linear infinite"
+//     },
+//     "@keyframes spin": {
+//       "0%": {
+//         transform: "rotate(0deg)"
+//       },
+//       "100%": {
+//         transform: "rotate(360deg)"
+//       }
+//     }
+//   })
+// );
+
+const useStyles = makeStyles((theme) => ({
+	refresh: {
+		marginTop: "20px",
+		cursor: "pointer",
+		margin: "auto",
+		"&.spin": {
+			animation: "$spin 1s 1",
+			pointerEvents:'none'
+		}
+	},
+	"@keyframes spin": {
+		"0%": {
+			transform: "rotate(0deg)"
+		},
+		"100%": {
+			transform: "rotate(360deg)"
+		}
+	}
+}));
+
 function ListGameStacks() {
   const navigate = useNavigate();
 
@@ -220,7 +259,48 @@ function ListGameStacks() {
     return result;
   }
 
+  // const session = useSessionContext();
+
+  function updateSessionContext(_role: string, _token: string) {
+    session.role = _role;
+    session.token = _token;
+  }
+
+  const SetUserAttributes = async () => {
+    try {
+      // const userAttributes = await fetchUserAttributes();
+      const { tokens } = await fetchAuthSession();
+      if (tokens !== undefined) {
+        updateSessionContext(
+          "" + tokens.accessToken.payload["cognito:groups"],
+          tokens.accessToken.toString()
+        );
+        fetchGameStacks();
+      } else {
+        console.log("couldn't get cognito token");
+      }
+
+      console.log("context role : " + session.role);
+
+      // console.log("role:", userAttributes.role);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const [spin, setSpin] = useState(false);
+	const classes = useStyles();
+
+	const refreshCanvas = () => {
+		setSpin(true);
+		setTimeout(() => {
+			setSpin(false);
+		}, 1000);
+	};
+ 
+
   useEffect(() => {
+    SetUserAttributes();
     if (import.meta.env.VITE_DEPLOYMENT_BRANCH == "prod") {
       const intervalCall = setInterval(() => {
         fetchGameStacks();
@@ -230,7 +310,7 @@ function ListGameStacks() {
         clearInterval(intervalCall);
       };
     } else {
-      fetchGameStacks();
+      // fetchGameStacks();
     }
   }, []);
 
@@ -238,12 +318,19 @@ function ListGameStacks() {
   //   fetchGameStacks();
   // }, []);
 
+  // const classes = useStyles();
+
   return (
     <div>
       <Box sx={{ textAlign: "right", padding: "20px" }}>
         <IconButton
           color="secondary"
+          className={clsx({
+            [classes.refresh]: true,
+            spin: spin
+          })}    
           onClick={() => {
+            refreshCanvas();
             refreshGameStacks();
           }}
         >

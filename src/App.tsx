@@ -58,10 +58,16 @@ function App() {
     token: "defaultToken",
   });
 
+  const components = {  SignIn: {
+    Footer() {
+      return (<div></div>);
+    }}
+  }
+
   return (
     <div className="App">
       <div>
-        <Authenticator hideSignUp>
+        <Authenticator components={components} hideSignUp>
           {({ signOut, user }) => (
             <ThemeProvider theme={theme}>
               <SessionContext.Provider value={session}>
@@ -70,7 +76,7 @@ function App() {
 
                   <Router>
                     <Routes>
-                      <Route path="/" element={<Home />} />
+                      <Route path="/" element={<ListGameStacks />} />
 
                       <Route path="/gamestacks" element={<ListGameStacks />} />
                       <Route
