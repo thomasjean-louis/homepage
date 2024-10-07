@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import { useGameStackContext } from "./GameStackContext";
 import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function JoinGameStacks() {
   const gameStack = useGameStackContext();
@@ -14,9 +15,15 @@ function JoinGameStacks() {
       handler();
     } else {
       window.addEventListener("load", handler);
-      return () => document.removeEventListener("load", handler);
+      return () => {
+        document.removeEventListener("load", handler);
+      };
     }
   });
+
+  if (gameStack.game_server_https_url == "defaultUrl") {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <>
