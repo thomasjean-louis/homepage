@@ -30,43 +30,27 @@ import { useGameStackContext } from "./GameStackContext";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { useSessionContext } from "./SessionContext";
 
-import {makeStyles, createStyles} from "@mui/styles";
+import { makeStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
 
-// export const useStyles = makeStyles(() =>
-//   createStyles({
-//     rotateIcon: {
-//       animation: "$spin 0.75s linear infinite"
-//     },
-//     "@keyframes spin": {
-//       "0%": {
-//         transform: "rotate(0deg)"
-//       },
-//       "100%": {
-//         transform: "rotate(360deg)"
-//       }
-//     }
-//   })
-// );
-
 const useStyles = makeStyles((theme) => ({
-	refresh: {
-		marginTop: "20px",
-		cursor: "pointer",
-		margin: "auto",
-		"&.spin": {
-			animation: "$spin 1s 1",
-			pointerEvents:'none'
-		}
-	},
-	"@keyframes spin": {
-		"0%": {
-			transform: "rotate(0deg)"
-		},
-		"100%": {
-			transform: "rotate(360deg)"
-		}
-	}
+  refresh: {
+    marginTop: "20px",
+    cursor: "pointer",
+    margin: "auto",
+    "&.spin": {
+      animation: "$spin 1s 1",
+      pointerEvents: "none",
+    },
+  },
+  "@keyframes spin": {
+    "0%": {
+      transform: "rotate(0deg)",
+    },
+    "100%": {
+      transform: "rotate(360deg)",
+    },
+  },
 }));
 
 function ListGameStacks() {
@@ -110,6 +94,7 @@ function ListGameStacks() {
   }
 
   async function fetchGameStacks() {
+    refreshCanvas();
     try {
       axios
         .get(getGameStacksEndpoint, {
@@ -289,15 +274,14 @@ function ListGameStacks() {
   };
 
   const [spin, setSpin] = useState(false);
-	const classes = useStyles();
+  const classes = useStyles();
 
-	const refreshCanvas = () => {
-		setSpin(true);
-		setTimeout(() => {
-			setSpin(false);
-		}, 1000);
-	};
- 
+  const refreshCanvas = () => {
+    setSpin(true);
+    setTimeout(() => {
+      setSpin(false);
+    }, 1000);
+  };
 
   useEffect(() => {
     SetUserAttributes();
@@ -327,10 +311,9 @@ function ListGameStacks() {
           color="secondary"
           className={clsx({
             [classes.refresh]: true,
-            spin: spin
-          })}    
+            spin: spin,
+          })}
           onClick={() => {
-            refreshCanvas();
             refreshGameStacks();
           }}
         >
