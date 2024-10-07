@@ -13,6 +13,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   useNavigate,
 } from "react-router-dom";
 
@@ -58,10 +59,18 @@ function App() {
     token: "defaultToken",
   });
 
+  const components = {
+    SignIn: {
+      Footer() {
+        return <div></div>;
+      },
+    },
+  };
+
   return (
     <div className="App">
       <div>
-        <Authenticator hideSignUp>
+        <Authenticator components={components} hideSignUp>
           {({ signOut, user }) => (
             <ThemeProvider theme={theme}>
               <SessionContext.Provider value={session}>
@@ -70,9 +79,13 @@ function App() {
 
                   <Router>
                     <Routes>
-                      <Route path="/" element={<Home />} />
+                      <Route path="/" element={<ListGameStacks />} />
+                      {/* <Route
+                        path="/gamestack/join/index.html"
+                        element={<Navigate replace to="/" />}
+                      /> */}
 
-                      <Route path="/gamestacks" element={<ListGameStacks />} />
+                      {/* <Route path="/gamestacks" element={<ListGameStacks />} /> */}
                       <Route
                         path="/gamestacks/add"
                         element={<AddGameStacks />}
@@ -88,9 +101,6 @@ function App() {
                     </Routes>
                   </Router>
                   <button onClick={signOut}>Sign out</button>
-                  {/* <button onClick={printUserAttributes}>
-                      Print Attributes
-                    </button> */}
                 </GameStackContext.Provider>
               </SessionContext.Provider>
             </ThemeProvider>
