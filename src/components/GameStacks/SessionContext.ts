@@ -7,7 +7,7 @@ export function useSessionContext() {
   const session = useContext(SessionContext);
 
   if (session === undefined) {
-    throw new Error("usSession must be used with a SessionContext");
+    throw new Error("useSession must be used with a SessionContext");
   }
 
   return session;

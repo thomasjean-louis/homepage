@@ -15,6 +15,7 @@ import {
   Box,
   Button,
   IconButton,
+  Grid,
 } from "@mui/material";
 import axios from "axios";
 
@@ -59,7 +60,6 @@ function ListGameStacks() {
   const [gamestacks, setGameStacks] = useState([]);
   const session = useSessionContext();
 
-  console.log("session " + session.role);
   var isAdmin = session.role == "admin";
 
   var apiHttpsUrl = "default";
@@ -104,7 +104,6 @@ function ListGameStacks() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setGameStacks(res.data);
         });
     } catch (error) {
@@ -129,7 +128,6 @@ function ListGameStacks() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           refreshGameStacks();
         });
     } catch (error) {
@@ -138,10 +136,7 @@ function ListGameStacks() {
   }
 
   function startGameServer(_id: string) {
-    console.log("start");
-
     if (document != null && document.getElementById("start-" + _id) != null) {
-      console.log("button found");
       (document.getElementById("start-" + _id)! as any).disabled = "true";
     }
 
@@ -153,7 +148,6 @@ function ListGameStacks() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           refreshGameStacks();
         });
     } catch (error) {
@@ -162,10 +156,7 @@ function ListGameStacks() {
   }
 
   function stopGameServer(_id: string) {
-    console.log("stop");
-
     if (document != null && document.getElementById("stop-" + _id) != null) {
-      console.log("button found");
       (document.getElementById("stop-" + _id)! as any).disabled = "true";
     }
 
@@ -177,7 +168,6 @@ function ListGameStacks() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           refreshGameStacks();
         });
     } catch (error) {
@@ -209,7 +199,6 @@ function ListGameStacks() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           refreshGameStacks();
         });
     } catch (error) {
@@ -253,7 +242,6 @@ function ListGameStacks() {
 
   const SetUserAttributes = async () => {
     try {
-      // const userAttributes = await fetchUserAttributes();
       const { tokens } = await fetchAuthSession();
       if (tokens !== undefined) {
         updateSessionContext(
@@ -262,15 +250,8 @@ function ListGameStacks() {
         );
         fetchGameStacks();
       } else {
-        console.log("couldn't get cognito token");
       }
-
-      console.log("context role : " + session.role);
-
-      // console.log("role:", userAttributes.role);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const [spin, setSpin] = useState(false);
@@ -294,137 +275,173 @@ function ListGameStacks() {
         clearInterval(intervalCall);
       };
     } else {
-      // fetchGameStacks();
     }
   }, []);
 
-  // useEffect(() => {
-  //   fetchGameStacks();
-  // }, []);
-
-  // const classes = useStyles();
+  const styles = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
 
   return (
     <div>
-      <Box sx={{ textAlign: "right", padding: "20px" }}>
-        <IconButton
-          color="secondary"
-          className={clsx({
-            [classes.refresh]: true,
-            spin: spin,
-          })}
-          onClick={() => {
-            refreshGameStacks();
-          }}
-        >
-          <RefreshIcon></RefreshIcon>
-        </IconButton>
-        <Button
-          variant="contained"
-          disabled={!isAdmin}
-          onClick={() => {
-            createGameStack();
-          }}
-        >
-          Create
-        </Button>
-      </Box>
-      {gamestacks?.length > 0 ? (
-        <div>
-          {gamestacks.map((gamestack) => (
-            <Box
-              key={gamestack[0]["ID"]}
-              sx={{
-                paddingLeft: "1em",
-                paddingRight: "1em",
-                paddingBottom: "1em",
-              }}
-            >
-              <Card sx={{ border: "1px solid gray" }}>
-                <CardContent>
-                  <Typography>
-                    <IconButton
-                      sx={{
-                        color: setStatusColor(gamestack[0]["ServerStatus"]),
-                      }}
-                    >
-                      <CircleIcon></CircleIcon>
-                    </IconButton>
-                    {gamestack[0]["ServerLink"]}
-                    <br></br>
-                    {gamestack[0]["Message"]}
-                    <br></br>
-                    {GetServerTimeRemaining(
-                      gamestack[0]["ServerStatus"],
-                      gamestack[0]["StopServerTime"]
-                    )}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  {gamestack[0]["ServerStatus"] === "running" ? (
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          joinGameStack(
-                            gamestack[0]["ID"],
-                            Number(gamestack[0]["Capacity"]),
-                            gamestack[0]["ServerLink"]
-                          );
-                        }}
-                      >
-                        {" "}
-                        Join{" "}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        id={"stop-" + gamestack[0]["ID"]}
-                        disabled={!isAdmin}
-                        onClick={() => {
-                          stopGameServer(gamestack[0]["ID"]);
-                        }}
-                      >
-                        {" "}
-                        Stop{" "}
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>
-                      {gamestack[0]["ServerStatus"] === "stopped" ? (
+      <Grid container>
+        <Grid sx={styles} item xs={12}>
+          {gamestacks?.length > 0 ? (
+            <div>
+              <Box
+                sx={{
+                  paddingLeft: "1em",
+                  paddingRight: "1em",
+                  paddingTop: "1em",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  disabled={!isAdmin}
+                  onClick={() => {
+                    createGameStack();
+                  }}
+                >
+                  Create
+                </Button>
+                <IconButton
+                  color="secondary"
+                  className={clsx({
+                    [classes.refresh]: true,
+                    spin: spin,
+                  })}
+                  onClick={() => {
+                    refreshGameStacks();
+                  }}
+                >
+                  <RefreshIcon></RefreshIcon>
+                </IconButton>
+              </Box>
+              {gamestacks.map((gamestack) => (
+                <Box
+                  key={gamestack[0]["ID"]}
+                  sx={{
+                    paddingLeft: "1em",
+                    paddingRight: "1em",
+                    paddingBottom: "1em",
+                  }}
+                >
+                  <Card sx={{ border: "1px solid gray" }}>
+                    <CardContent>
+                      <Grid container>
+                        <Grid
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "left",
+                          }}
+                          item
+                          xs={12}
+                        >
+                          {" "}
+                          <IconButton
+                            sx={{
+                              color: setStatusColor(
+                                gamestack[0]["ServerStatus"]
+                              ),
+                            }}
+                          >
+                            <CircleIcon></CircleIcon>
+                          </IconButton>
+                          {"Server name : " +
+                            (gamestack[0]["ServerLink"] as string).split(
+                              ".",
+                              1
+                            )}
+                        </Grid>
+                      </Grid>
+
+                      <Card sx={{ border: "1px dashed grey", p: 3 }}>
+                        {gamestack[0]["Message"]}
+                        <br></br>
+
+                        {GetServerTimeRemaining(
+                          gamestack[0]["ServerStatus"],
+                          gamestack[0]["StopServerTime"]
+                        )}
+                      </Card>
+
+                      <Grid sx={styles} item xs={12} marginTop={2}>
+                        {gamestack[0]["ServerStatus"] === "running" ? (
+                          <div>
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                joinGameStack(
+                                  gamestack[0]["ID"],
+                                  Number(gamestack[0]["Capacity"]),
+                                  gamestack[0]["ServerLink"]
+                                );
+                              }}
+                            >
+                              {" "}
+                              Join{" "}
+                            </Button>
+                            &nbsp;&nbsp;
+                            <Button
+                              variant="contained"
+                              id={"stop-" + gamestack[0]["ID"]}
+                              disabled={!isAdmin}
+                              onClick={() => {
+                                stopGameServer(gamestack[0]["ID"]);
+                              }}
+                            >
+                              {" "}
+                              Stop{" "}
+                            </Button>
+                            &nbsp;&nbsp;
+                          </div>
+                        ) : (
+                          <div>
+                            {gamestack[0]["ServerStatus"] === "stopped" ? (
+                              <div>
+                                <Button
+                                  variant="contained"
+                                  id={"start-" + gamestack[0]["ID"]}
+                                  onClick={() => {
+                                    startGameServer(gamestack[0]["ID"]);
+                                  }}
+                                >
+                                  {" "}
+                                  Start{" "}
+                                </Button>
+                                &nbsp;&nbsp;
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                          </div>
+                        )}
                         <Button
-                          variant="contained"
-                          id={"start-" + gamestack[0]["ID"]}
+                          size="small"
+                          disabled={!isAdmin}
+                          color="error"
                           onClick={() => {
-                            startGameServer(gamestack[0]["ID"]);
+                            deleteGameStack(gamestack[0]["ID"]);
                           }}
                         >
                           {" "}
-                          Start{" "}
+                          Delete{" "}
                         </Button>
-                      ) : (
-                        <div></div>
-                      )}
-                    </div>
-                  )}
-                  <Button
-                    size="small"
-                    disabled={!isAdmin}
-                    color="error"
-                    onClick={() => {
-                      deleteGameStack(gamestack[0]["ID"]);
-                    }}
-                  >
-                    {" "}
-                    Delete{" "}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Box>
-          ))}
-        </div>
-      ) : (
-        <div>No game stacks have been found</div>
-      )}
+                      </Grid>
+                    </CardContent>
+                    <CardActions></CardActions>
+                  </Card>
+                </Box>
+              ))}
+            </div>
+          ) : (
+            <div>No game stacks have been found</div>
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 }
