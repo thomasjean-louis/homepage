@@ -80,10 +80,12 @@ function App() {
                   <Router>
                     <Routes>
                       <Route path="/" element={<ListGameStacks />} />
-                      {/* <Route
-                        path="/gamestack/join/index.html"
-                        element={<Navigate replace to="/" />}
-                      /> */}
+                      {
+                        <Route
+                          path="/index.html"
+                          element={<Navigate replace to="/" />}
+                        />
+                      }
 
                       {/* <Route path="/gamestacks" element={<ListGameStacks />} /> */}
                       <Route
