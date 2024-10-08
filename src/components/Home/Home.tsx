@@ -21,15 +21,8 @@ function Home() {
           tokens.accessToken.toString()
         );
       } else {
-        console.log("couldn't get cognito token");
       }
-
-      console.log("context role : " + session.role);
-
-      // console.log("role:", userAttributes.role);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   SetUserAttributes();

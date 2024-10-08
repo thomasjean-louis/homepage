@@ -7,9 +7,7 @@ function JoinGameStacks() {
   const gameStack = useGameStackContext();
 
   useEffect(() => {
-    const handler = () => {
-      console.log(1);
-    };
+    const handler = () => {};
 
     if (document.readyState === "complete") {
       handler();

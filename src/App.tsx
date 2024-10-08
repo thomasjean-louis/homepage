@@ -6,6 +6,17 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { fetchUserAttributes } from "@aws-amplify/auth";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  Grid,
+  Divider,
+} from "@mui/material";
 
 // let token = (await fetchAuthSession()).tokens?.idToken?.toString();
 
@@ -67,6 +78,37 @@ function App() {
     },
   };
 
+  const styles = {
+    display: "flex",
+    alignItems: "right",
+    justifyContent: "center",
+  };
+
+  function updateSessionContext(_role: string, _token: string) {
+    setSession({
+      ...session,
+      role: _role,
+      token: _token,
+    });
+  }
+
+  const SetUserAttributes = async () => {
+    try {
+      const { tokens } = await fetchAuthSession();
+
+      if (tokens !== undefined) {
+        updateSessionContext(
+          "" + tokens.accessToken.payload["cognito:groups"],
+          tokens.accessToken.toString()
+        );
+      }
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    SetUserAttributes();
+  }, []);
+
   return (
     <div className="App">
       <div>
@@ -76,6 +118,29 @@ function App() {
               <SessionContext.Provider value={session}>
                 <GameStackContext.Provider value={gameStack}>
                   <CssBaseline />
+                  <Grid container marginTop={2}>
+                    <Grid sx={styles} item xs={12}>
+                      <Typography variant="h5" color="inherit">
+                        {user?.username}&nbsp;{"-"}&nbsp;{session.role}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    <Grid sx={styles} item xs={12}>
+                      <Typography variant="h6" color="inherit">
+                        <Button variant="text" onClick={signOut} color="error">
+                          Sign out
+                        </Button>
+                        <Divider
+                          sx={{
+                            backgroundColor: "white",
+                            height: "2px",
+                            width: "100%",
+                          }}
+                        />
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
                   <Router>
                     <Routes>
@@ -102,7 +167,6 @@ function App() {
                       />
                     </Routes>
                   </Router>
-                  <button onClick={signOut}>Sign out</button>
                 </GameStackContext.Provider>
               </SessionContext.Provider>
             </ThemeProvider>
