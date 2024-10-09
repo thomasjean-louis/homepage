@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import { useGameStackContext } from "./GameStackContext";
 import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 
 function JoinGameStacks() {
   const gameStack = useGameStackContext();
@@ -81,19 +82,34 @@ function JoinGameStacks() {
         sizes="16x16"
         href="/favicon-16x16.png"
       />
+
       <link rel="manifest" href="/manifest.json" />
-      {gameStack.game_server_https_url}
-      <Helmet>
-        <script
-          type="text/javascript"
-          src="/ioquake3.js"
-          data-url={gameStack.game_server_https_url}
-        ></script>
-      </Helmet>
-      <div>
-        <div id="viewport-frame"></div>
-      </div>
-      <div>testtt</div>
+      {
+        <Grid container marginTop={2}>
+          <Grid
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              width: "100%",
+            }}
+            item
+            xs={12}
+          >
+            <Helmet>
+              <script
+                type="text/javascript"
+                src="/ioquake3.js"
+                data-url={gameStack.game_server_https_url}
+              ></script>
+            </Helmet>
+            <div>
+              <div id="viewport-frame"></div>
+            </div>
+          </Grid>
+        </Grid>
+      }
     </>
   );
 }

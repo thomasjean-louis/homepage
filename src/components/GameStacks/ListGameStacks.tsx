@@ -295,6 +295,7 @@ function ListGameStacks() {
                   paddingLeft: "1em",
                   paddingRight: "1em",
                   paddingTop: "1em",
+                  paddingBottom: "0.5em",
                 }}
               >
                 <Button

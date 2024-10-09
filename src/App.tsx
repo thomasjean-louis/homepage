@@ -60,14 +60,14 @@ export interface Session {
 
 function App() {
   const [gameStack] = useState<GameStack>({
-    id: "defaultId",
+    id: "",
     capacity: -1,
-    game_server_https_url: "defaultUrl",
+    game_server_https_url: "",
   });
 
   const [session, setSession] = useState<Session>({
-    role: "defaultRole",
-    token: "defaultToken",
+    role: "",
+    token: "",
   });
 
   const components = {
@@ -118,6 +118,7 @@ function App() {
               <SessionContext.Provider value={session}>
                 <GameStackContext.Provider value={gameStack}>
                   <CssBaseline />
+
                   <Grid container marginTop={2}>
                     <Grid sx={styles} item xs={12}>
                       <Typography variant="h5" color="inherit">
