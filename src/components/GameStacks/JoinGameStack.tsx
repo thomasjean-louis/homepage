@@ -22,12 +22,8 @@ function JoinGameStacks() {
     }
   });
 
-  let navigate = useNavigate();
   if (gameStack.game_server_https_url == "defaultUrl") {
-    console.log("redirect");
-    return () => {
-      navigate("/index.html");
-    };
+    return <Navigate to="/" replace />;
   }
 
   return (
