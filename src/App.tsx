@@ -55,6 +55,7 @@ export interface GameStack {
 
 export interface Session {
   role: string;
+  username: string;
   token: string;
 }
 
@@ -67,6 +68,7 @@ function App() {
 
   const [session, setSession] = useState<Session>({
     role: "",
+    username: "",
     token: "",
   });
 
@@ -84,10 +86,15 @@ function App() {
     justifyContent: "center",
   };
 
-  function updateSessionContext(_role: string, _token: string) {
+  function updateSessionContext(
+    _role: string,
+    _username: string,
+    _token: string
+  ) {
     setSession({
       ...session,
       role: _role,
+      username: _username,
       token: _token,
     });
   }
@@ -99,6 +106,7 @@ function App() {
       if (tokens !== undefined) {
         updateSessionContext(
           "" + tokens.accessToken.payload["cognito:groups"],
+          "" + tokens.accessToken.payload.username,
           tokens.accessToken.toString()
         );
       }
@@ -146,12 +154,11 @@ function App() {
                   <Router>
                     <Routes>
                       <Route path="/" element={<ListGameStacks />} />
-                      {
-                        <Route
-                          path="/index.html"
-                          element={<Navigate replace to="/" />}
-                        />
-                      }
+
+                      <Route
+                        path="/index.html"
+                        element={<Navigate replace to="/" />}
+                      />
 
                       {/* <Route path="/gamestacks" element={<ListGameStacks />} /> */}
                       <Route
@@ -166,6 +173,7 @@ function App() {
                         path="/gamestack/join"
                         element={<JoinGameStacks />}
                       />
+                      <Route path="*" element={<ListGameStacks />} />
                     </Routes>
                   </Router>
                 </GameStackContext.Provider>

@@ -3,9 +3,11 @@ import { useGameStackContext } from "./GameStackContext";
 import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { useSessionContext } from "./SessionContext";
 
 function JoinGameStacks() {
   const gameStack = useGameStackContext();
+  const user = useSessionContext();
 
   useEffect(() => {
     const handler = () => {};
@@ -20,8 +22,12 @@ function JoinGameStacks() {
     }
   });
 
+  let navigate = useNavigate();
   if (gameStack.game_server_https_url == "defaultUrl") {
-    return <Navigate to="/" replace />;
+    console.log("redirect");
+    return () => {
+      navigate("/index.html");
+    };
   }
 
   return (
@@ -102,6 +108,7 @@ function JoinGameStacks() {
                 type="text/javascript"
                 src="/ioquake3.js"
                 data-url={gameStack.game_server_https_url}
+                player-name={user.username}
               ></script>
             </Helmet>
             <div>
