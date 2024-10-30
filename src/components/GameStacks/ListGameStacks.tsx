@@ -77,19 +77,22 @@ function ListGameStacks() {
   function updateGameStackContext(
     _id: string,
     _capacity: number,
-    _serverLink: string
+    _serverLink: string,
+    _serverStopTime: string
   ) {
     gameStack.id = _id;
     gameStack.capacity = _capacity;
     gameStack.game_server_https_url = _serverLink;
+    gameStack.server_stop_time = _serverStopTime;
   }
 
   function updateGameStack(
     _id: string,
     _capacity: number,
-    _serverLink: string
+    _serverLink: string,
+    _serverStopTime: string
   ) {
-    updateGameStackContext(_id, _capacity, _serverLink);
+    updateGameStackContext(_id, _capacity, _serverLink, _serverStopTime);
     navigate("/gamestacks/update", {});
   }
 
@@ -206,8 +209,13 @@ function ListGameStacks() {
     }
   }
 
-  function joinGameStack(_id: string, _capacity: number, _serverLink: string) {
-    updateGameStackContext(_id, _capacity, _serverLink);
+  function joinGameStack(
+    _id: string,
+    _capacity: number,
+    _serverLink: string,
+    _serverStopTime: string
+  ) {
+    updateGameStackContext(_id, _capacity, _serverLink, _serverStopTime);
     navigate("/gamestack/join", {});
   }
 
@@ -378,7 +386,8 @@ function ListGameStacks() {
                                 joinGameStack(
                                   gamestack[0]["ID"],
                                   Number(gamestack[0]["Capacity"]),
-                                  gamestack[0]["ServerLink"]
+                                  gamestack[0]["ServerLink"],
+                                  gamestack[0]["StopServerTime"]
                                 );
                               }}
                             >

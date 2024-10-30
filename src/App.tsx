@@ -26,6 +26,7 @@ import {
   Route,
   Navigate,
   useNavigate,
+  NavLink,
 } from "react-router-dom";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -51,6 +52,7 @@ export interface GameStack {
   id: string;
   capacity: number;
   game_server_https_url: string;
+  server_stop_time: string;
 }
 
 export interface Session {
@@ -64,6 +66,7 @@ function App() {
     id: "",
     capacity: -1,
     game_server_https_url: "",
+    server_stop_time: "",
   });
 
   const [session, setSession] = useState<Session>({
@@ -114,8 +117,11 @@ function App() {
   };
 
   useEffect(() => {
+    console.log("set user attribute");
     SetUserAttributes();
   }, []);
+
+  SetUserAttributes();
 
   return (
     <div className="App">
@@ -127,40 +133,41 @@ function App() {
                 <GameStackContext.Provider value={gameStack}>
                   <CssBaseline />
 
-                  <Grid container marginTop={2}>
-                    <Grid sx={styles} item xs={12}>
-                      <Typography variant="h5" color="inherit">
-                        {user?.username}&nbsp;{"-"}&nbsp;{session.role}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid sx={styles} item xs={12}>
-                      <Typography variant="h6" color="inherit">
-                        <Button variant="text" onClick={signOut} color="error">
-                          Sign out
-                        </Button>
-                        <Divider
-                          sx={{
-                            backgroundColor: "white",
-                            height: "2px",
-                            width: "100%",
-                          }}
-                        />
-                      </Typography>
-                    </Grid>
-                  </Grid>
-
                   <Router>
+                    <Grid container marginTop={2}>
+                      <Grid sx={styles} item xs={12}>
+                        <Typography variant="h5" color="inherit">
+                          {user?.username}&nbsp;{session?.role == "" ? "" : "-"}
+                          &nbsp;{session?.role}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid sx={styles} item xs={12}>
+                        <Typography variant="h6" color="inherit">
+                          <Button
+                            variant="text"
+                            onClick={signOut}
+                            color="error"
+                          >
+                            Sign out
+                          </Button>
+                          <Divider
+                            sx={{
+                              backgroundColor: "white",
+                              height: "2px",
+                              width: "100%",
+                            }}
+                          />
+                        </Typography>
+                      </Grid>
+                    </Grid>
                     <Routes>
                       <Route path="/" element={<ListGameStacks />} />
-
                       <Route
                         path="/index.html"
                         element={<Navigate replace to="/" />}
                       />
-
-                      {/* <Route path="/gamestacks" element={<ListGameStacks />} /> */}
                       <Route
                         path="/gamestacks/add"
                         element={<AddGameStacks />}
