@@ -155,8 +155,8 @@ function JoinGameStacks() {
                   <Button
                     variant="text"
                     onClick={() => {
-                      setIsPlaying("false");
-                      navigate("/");
+                      window.location.reload();
+
                     }}
                     color="error"
                   >
