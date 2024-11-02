@@ -37,7 +37,7 @@ function JoinGameStacks() {
       countdown += remSeconds + " s";
     }
 
-    if (remMinutes <= 0 && remSeconds <= 6) {
+    if (remMinutes <= 0 && remSeconds <= 4) {
       ForcePageRefresh();
     }
 
