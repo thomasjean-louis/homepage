@@ -5,7 +5,7 @@ import viteLogo from "/vite.svg";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { fetchAuthSession } from "aws-amplify/auth";
-import { fetchUserAttributes } from "@aws-amplify/auth";
+import { fetchUserAttributes, signOut } from "@aws-amplify/auth";
 import {
   Card,
   CardContent,
@@ -117,11 +117,16 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("set user attribute");
     SetUserAttributes();
   }, []);
 
   SetUserAttributes();
+
+  function SetSignOut()
+  {
+    signOut;
+    window.location.reload();
+  }
 
   return (
     <div className="App">
@@ -147,7 +152,7 @@ function App() {
                         <Typography variant="h6" color="inherit">
                           <Button
                             variant="text"
-                            onClick={signOut}
+                            onClick={SetSignOut}
                             color="error"
                           >
                             Sign out

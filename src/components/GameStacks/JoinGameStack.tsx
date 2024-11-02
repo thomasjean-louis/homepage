@@ -13,7 +13,6 @@ function JoinGameStacks() {
   const user = useSessionContext();
 
   if (gameStack.game_server_https_url == "defaultUrl") {
-    console.log("redirecting to home");
     return <Navigate to="/" replace />;
   }
 
