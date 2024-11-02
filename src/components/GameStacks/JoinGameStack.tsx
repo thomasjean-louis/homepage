@@ -161,14 +161,13 @@ function JoinGameStacks() {
               <Grid container>
                 <Grid sx={styles} item xs={12}>
                   <Button
-                    variant="text"
+                    variant="contained"
                     onClick={() => {
                       ForcePageRefresh();
                     }}
-                    color="error"
                   >
                     Home
-                  </Button>
+                  </Button>&nbsp;&nbsp;
                   <Typography variant="h6" color="inherit">
                     {timeRemainingText}
                   </Typography>

@@ -124,7 +124,8 @@ function App() {
 
   function SetSignOut()
   {
-    signOut;
+    signOut();
+    console.log("signed out");
     window.location.reload();
   }
 
@@ -152,7 +153,9 @@ function App() {
                         <Typography variant="h6" color="inherit">
                           <Button
                             variant="text"
-                            onClick={SetSignOut}
+                            onClick={() => {
+                              SetSignOut();
+                            }}
                             color="error"
                           >
                             Sign out
