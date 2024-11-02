@@ -121,19 +121,19 @@ function App() {
   }, []);
 
   SetUserAttributes();
-
-  function SetSignOut()
-  {
-    signOut();
+  
+  async function handleSignOut() {
+    await signOut()
     console.log("signed out");
     window.location.reload();
+    console.log("reloaded");
   }
 
   return (
     <div className="App">
       <div>
         <Authenticator components={components} hideSignUp>
-          {({ signOut, user }) => (
+          {({  user }) => (
             <ThemeProvider theme={theme}>
               <SessionContext.Provider value={session}>
                 <GameStackContext.Provider value={gameStack}>
@@ -153,9 +153,7 @@ function App() {
                         <Typography variant="h6" color="inherit">
                           <Button
                             variant="text"
-                            onClick={() => {
-                              SetSignOut();
-                            }}
+                            onClick={handleSignOut}
                             color="error"
                           >
                             Sign out
