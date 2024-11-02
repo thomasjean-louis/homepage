@@ -7,11 +7,15 @@ import { useSessionContext } from "./SessionContext";
 
 function JoinGameStacks() {
   const navigate = useNavigate();
-
-  const [isPlaying, setIsPlaying] = useState("true");
+  const [timeRemainingText, setTimeRemainingText] = useState("");
 
   const gameStack = useGameStackContext();
   const user = useSessionContext();
+
+  if (gameStack.game_server_https_url == "defaultUrl") {
+    console.log("redirecting to home");
+    return <Navigate to="/" replace />;
+  }
 
   function GetServerTimeRemaining() {
     var stopDate = new Date(gameStack.server_stop_time + "Z");
@@ -34,32 +38,38 @@ function JoinGameStacks() {
     }
 
     if (remMinutes < 0 && remSeconds < 0) {
-      return <Navigate to="/" replace />;
+      ForcePageRefresh();
     }
 
-    return "Time remaining : " + countdown;
+    setTimeRemainingText("Time remaining : " + countdown);
   }
 
-  function PrintCountDown() {}
+  function ForcePageRefresh() {
+    window.location.reload();
+  }
 
   const [counter, setCounter] = useState(60);
 
+
   useEffect(() => {
     const handler = () => {};
+
+    const intervalCall = setInterval(() => {
+      GetServerTimeRemaining();
+          }, 1000);
 
     if (document.readyState === "complete") {
       // handler();
     } else {
       // window.addEventListener("load", handler);
       return () => {
+        clearInterval(intervalCall);
         document.removeEventListener("load", handler);
       };
     }
   });
 
-  if (gameStack.game_server_https_url == "defaultUrl") {
-    return <Navigate to="/" replace />;
-  }
+
   const styles = {
     display: "flex",
     alignItems: "right",
@@ -68,7 +78,6 @@ function JoinGameStacks() {
 
   return (
     <>
-      <meta name="isPlaying" content={isPlaying} />
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
       <meta name="theme-color" content="#ffffff" />
@@ -155,15 +164,14 @@ function JoinGameStacks() {
                   <Button
                     variant="text"
                     onClick={() => {
-                      window.location.reload();
-
+                      ForcePageRefresh();
                     }}
                     color="error"
                   >
                     Home
                   </Button>
                   <Typography variant="h6" color="inherit">
-                    {GetServerTimeRemaining()}
+                    {timeRemainingText}
                   </Typography>
                 </Grid>
               </Grid>
