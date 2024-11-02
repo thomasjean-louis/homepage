@@ -7,6 +7,7 @@ import { useSessionContext } from "./SessionContext";
 
 function JoinGameStacks() {
   const navigate = useNavigate();
+  const [isPlaying, setIsPlaying] = useState("true");
   const [timeRemainingText, setTimeRemainingText] = useState("");
 
   const gameStack = useGameStackContext();
@@ -77,6 +78,7 @@ function JoinGameStacks() {
 
   return (
     <>
+      <meta name="isPlaying" content={isPlaying} />
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
       <meta name="theme-color" content="#ffffff" />
