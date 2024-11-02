@@ -123,7 +123,7 @@ function App() {
   SetUserAttributes();
   
   async function handleSignOut() {
-    await signOut()
+    await signOut({ global: true });
     console.log("signed out");
     window.location.reload();
     console.log("reloaded");
