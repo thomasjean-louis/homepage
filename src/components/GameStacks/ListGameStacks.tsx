@@ -296,27 +296,43 @@ function ListGameStacks() {
     alignItems: "center",
     justifyContent: "center",
   };
-  
 
   return (
     <div>
       <Grid container>
-      <Grid sx={styles} item xs={4}></Grid>
-        <Grid sx={descriptionStyles} item xs={4}>
-        <Card sx={{ backgroundColor: "#040404", border: "1px dashed grey", p: 1 }}>
-        <dl>
-       
-  <dt>Buttons:</dt>
-  <li><b>Create</b> (Admin), create a new game server</li>
-  <li><b>Start</b>, start the game server and launch a new game (~40s)</li>
-  <li><b>Join</b>, join a launched game</li>
-  <li><b>Stop</b> (Admin), stop a game server (auto-stop after 15min)</li>
-  <li><b>Delete</b> (Admin), delete a game server</li>
-  <br></br>
-  <dt>Game servers list refreshed every 5s.</dt>
-</dl>
-                      </Card>
+        <Grid sx={styles} item xs={12}>
+          {" "}
+          <h1>Welcome to the Multiplayer Gaming Platform demo !</h1>
+        </Grid>
+      </Grid>
 
+      <Grid container>
+        <Grid sx={styles} item xs={4}></Grid>
+        <Grid sx={descriptionStyles} item xs={4}>
+          <Card
+            sx={{ backgroundColor: "#040404", border: "1px dashed grey", p: 1 }}
+          >
+            <dl>
+              <dt>Buttons:</dt>
+              <li>
+                <b>Create</b> (Admin), create a new game server
+              </li>
+              <li>
+                <b>Start</b>, start the game server and launch a new game (~40s)
+              </li>
+              <li>
+                <b>Join</b>, join a launched game
+              </li>
+              <li>
+                <b>Stop</b> (Admin), stop a game server (auto-stop after 15min)
+              </li>
+              <li>
+                <b>Delete</b> (Admin), delete a game server
+              </li>
+              <br></br>
+              <dt>Game servers list refreshed every 5s.</dt>
+            </dl>
+          </Card>
         </Grid>
         <Grid sx={styles} item xs={4}></Grid>
       </Grid>
