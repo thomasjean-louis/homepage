@@ -1,4 +1,5 @@
-import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useGameStackContext } from "./GameStackContext";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -50,13 +51,12 @@ function JoinGameStacks() {
 
   const [counter, setCounter] = useState(60);
 
-
   useEffect(() => {
     const handler = () => {};
 
     const intervalCall = setInterval(() => {
       GetServerTimeRemaining();
-          }, 1000);
+    }, 1000);
 
     if (document.readyState === "complete") {
       // handler();
@@ -68,7 +68,6 @@ function JoinGameStacks() {
       };
     }
   });
-
 
   const styles = {
     display: "flex",
@@ -144,66 +143,79 @@ function JoinGameStacks() {
       <link rel="manifest" href="/manifest.json" />
       {
         <div>
-           <Grid container>
-      <Grid sx={styles} item xs={4}></Grid>
-        <Grid sx={descriptionStyles} item xs={4}>
-        <Card sx={{ backgroundColor: "#040404", border: "1px dashed grey", p: 1 }}>
-        <dl>
-        
-  <dt>Commands:</dt>
-  <li><b>Qwerty</b> control (WQSD to move)</li>
-  <li><b>Left click</b>, shoot</li>
-  <li><b>Escape</b>, to see the mouse again</li>
-  <br></br>
-  <dt>Bot added if no other human player joins.</dt>
-</dl>
-                      </Card>
-
-        </Grid>
-        <Grid sx={styles} item xs={4}></Grid>
-      </Grid>
-          <Grid container marginTop={2}>
-        <Grid
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-            width: "100%",
-          }}
-          item
-          xs={12}
-        >
-          <Helmet>
-            <script
-              type="text/javascript"
-              src="/ioquake3.js"
-              data-url={gameStack.game_server_https_url}
-              player-name={user.username}
-            ></script>
-          </Helmet>
-          <div>
-            {}
-            <Grid container>
-              <Grid sx={styles} item xs={12}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    ForcePageRefresh();
-                  }}
-                >
-                  Home
-                </Button>&nbsp;&nbsp;
-                <Typography variant="h6" color="inherit">
-                  {timeRemainingText}
-                </Typography>
-              </Grid>
+          <Grid container>
+            <Grid sx={styles} item xs={4}></Grid>
+            <Grid sx={descriptionStyles} item xs={4}>
+              <Card
+                sx={{
+                  backgroundColor: "#040404",
+                  border: "1px dashed grey",
+                  p: 1,
+                }}
+              >
+                <dl>
+                  <dt>Commands:</dt>
+                  <li>
+                    <b>Qwerty</b> control (WQSD to move)
+                  </li>
+                  <li>
+                    <b>Left click</b>, shoot
+                  </li>
+                  <li>
+                    <b>Escape</b>, to see the mouse again
+                  </li>
+                  <br></br>
+                  <dt>Bot added if no other human player joins.</dt>
+                </dl>
+              </Card>
             </Grid>
-            <div id="viewport-frame"></div>
-          </div>
-        </Grid>
-      </Grid></div>
-        
+            <Grid sx={styles} item xs={4}></Grid>
+          </Grid>
+          <Grid container marginTop={2}>
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+                width: "100%",
+              }}
+              item
+              xs={12}
+            >
+              <HelmetProvider>
+                <Helmet>
+                  <script
+                    type="text/javascript"
+                    src="/ioquake3.js"
+                    data-url={gameStack.game_server_https_url}
+                    player-name={user.username}
+                  ></script>
+                </Helmet>
+              </HelmetProvider>
+              <div>
+                {}
+                <Grid container>
+                  <Grid sx={styles} item xs={12}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        ForcePageRefresh();
+                      }}
+                    >
+                      Home
+                    </Button>
+                    &nbsp;&nbsp;
+                    <Typography variant="h6" color="inherit">
+                      {timeRemainingText}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <div id="viewport-frame"></div>
+              </div>
+            </Grid>
+          </Grid>
+        </div>
       }
     </>
   );
